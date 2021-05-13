@@ -12,10 +12,10 @@ from collections import OrderedDict
 import wx
 
 import app
-from app import log
+#from app import log
 from classes.GenericManager.generic_manager import GenericManager
 
-from classes.ui import UIControllerObject 
+from .objects import UIControllerObject
 
 
 class UIManager(GenericManager):

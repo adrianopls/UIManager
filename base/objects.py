@@ -11,9 +11,9 @@ from types import MethodType
 import wx
 
 #import app
-from app import log
+#from app import log
 from classes.GenericManager.generic_object import GenericObject
-from classes.om import ObjectManager
+#from classes.om import ObjectManager
 #from classes.ui import UIManager
 
 
@@ -150,44 +150,44 @@ class UIControllerObject(UIBaseObject):
         
         
     
-    def attach(self, OM_obj_uid):
-        """Attaches this object to a ObjectManager object.
+#     def attach(self, OM_obj_uid):
+#         """Attaches this object to a ObjectManager object.
         
-        Example: 
-            self.attach(('log', 1))
-            OM.remove(('log', 1))     -> self will be removed by UIManager 
-        """
-#        print ('ATTACHING...')       
-        #obj = OM.get(OM_objuid)
-        try:
-            OM = ObjectManager()
-            # Is OM_objuid valid?
-            obj = OM.get(OM_obj_uid)
-            if obj:
-                OM.subscribe(self._check_OM_removals, 'pre_remove')
-                self._attached_to = obj.uid
-#                print ('{} IS NOW ATTACHED TO {} \n'.format(self.uid, self._attached_to))
-        except Exception as e:
-            print ('ERROR WHILE ATTACHING:', e)
+#         Example: 
+#             self.attach(('log', 1))
+#             OM.remove(('log', 1))     -> self will be removed by UIManager 
+#         """
+# #        print ('ATTACHING...')       
+#         #obj = OM.get(OM_objuid)
+#         try:
+#             OM = ObjectManager()
+#             # Is OM_objuid valid?
+#             obj = OM.get(OM_obj_uid)
+#             if obj:
+#                 OM.subscribe(self._check_OM_removals, 'pre_remove')
+#                 self._attached_to = obj.uid
+# #                print ('{} IS NOW ATTACHED TO {} \n'.format(self.uid, self._attached_to))
+#         except Exception as e:
+#             print ('ERROR WHILE ATTACHING:', e)
 
            
             
-    def detach(self):
-        """Detach a object vinculated to a ObjectManager object 
-        by attach function.
+#     def detach(self):
+#         """Detach a object vinculated to a ObjectManager object 
+#         by attach function.
         
-        Called automatic from UIManager.remove function.
-        """
-        if self._attached_to is None:
-            return
-#        print ('DETACHING...')
-        try:
-            OM = ObjectManager()
-            OM.unsubscribe(self._check_OM_removals, 'pre_remove')
-#            print ('DETACHED {} FROM {}! \n'.format(self.uid, self._attached_to))
-            self._attached_to = None
-        except Exception as e:
-            print ('ERROR WHILE DETACHING:', e) 
+#         Called automatic from UIManager.remove function.
+#         """
+#         if self._attached_to is None:
+#             return
+# #        print ('DETACHING...')
+#         try:
+#             OM = ObjectManager()
+#             OM.unsubscribe(self._check_OM_removals, 'pre_remove')
+# #            print ('DETACHED {} FROM {}! \n'.format(self.uid, self._attached_to))
+#             self._attached_to = None
+#         except Exception as e:
+#             print ('ERROR WHILE DETACHING:', e) 
  
 
 

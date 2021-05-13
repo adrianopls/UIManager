@@ -3,11 +3,11 @@ from collections import OrderedDict
 import wx
 from pubsub import pub
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
+from ..base.manager import UIManager
+from ..base.objects import UIControllerObject 
+from ..base.objects import UIViewObject 
 #from app.pubsub import AUTO_TOPIC
-from app.app_utils import GripyIcon
+#from app.app_utils import GripyIcon
 
 
 
