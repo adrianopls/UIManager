@@ -3,9 +3,10 @@ from collections import OrderedDict
 import wx
 from pubsub import pub
 
-from classes.ui import UIManager
+from ..base.manager import UIManager
+
 from .toplevel import  TopLevelController, TopLevel
-from app.app_utils import GripyIcon
+from .icon import UIIcon
 
 
 class DialogController(TopLevelController):

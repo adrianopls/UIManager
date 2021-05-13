@@ -5,11 +5,12 @@ from types import FunctionType
 
 import wx
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import MainWindowController
-from app import log
-from app.app_utils import GripyBitmap
+from . import UIManager
+from . import UIControllerObject 
+
+from . import MainWindowController
+#from app import log
+from .base_wx.bitmap import UIBitmap
 
 
 class ToolBarToolController(UIControllerObject):

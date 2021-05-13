@@ -18,14 +18,14 @@ from matplotlib import style as mstyle
 import matplotlib.ticker as mticker
 from matplotlib import rcParams
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
-from app import pubsub 
+from . import UIManager
+from . import UIControllerObject 
+from . import UIViewObject 
+from . import publisher 
 
-#from app import app_utils 
 
-from app import log
+
+#from app import log
 
 
 # From matplotlib.axes._base.set_xscale
@@ -709,7 +709,7 @@ class CanvasBaseController(UIControllerObject):
 
 
     def on_change_axes_properties(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
         key = topic.getName().split('.')[2]
         prop = key.split('_')[1]
         #
@@ -725,7 +725,7 @@ class CanvasBaseController(UIControllerObject):
 
 
     def on_change_grid_parameters(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
 #        print ('\non_change_grid_params:', old_value, new_value, topic)
         key = topic.getName().split('.')[2]
         axis = key[0]           # x or y  (e.g. xgrid_major_color -> x)  
@@ -804,7 +804,7 @@ class CanvasBaseController(UIControllerObject):
 
 
     def on_change_figure_facecolor(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
         try:
             self.view.set_figure_facecolor(new_value)
         except:
@@ -815,7 +815,7 @@ class CanvasBaseController(UIControllerObject):
             
 
 
-    def on_change_spine(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):   
+    def on_change_spine(self, old_value, new_value, topic=publisher.AUTO_TOPIC):   
         key = topic.getName().split('.')[2]
         spine = key.split('_')[2]
         
@@ -832,7 +832,7 @@ class CanvasBaseController(UIControllerObject):
            
             
     def on_change_axis_visibility(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):   
+                                                      topic=publisher.AUTO_TOPIC):   
         key = topic.getName().split('.')[2]
         axis = key[0] # x or y  
         try:
@@ -853,7 +853,7 @@ class CanvasBaseController(UIControllerObject):
 
  
     # TODO: rever isso
-    def on_change_locator(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):           
+    def on_change_locator(self, old_value, new_value, topic=publisher.AUTO_TOPIC):           
         key = topic.getName().split('.')[2]
         axis, which, _ =  key.split('_')
         axis = axis[0] 
@@ -872,7 +872,7 @@ class CanvasBaseController(UIControllerObject):
 
 
 
-    def on_change_text_properties(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):
+    def on_change_text_properties(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
         print('on_change_text_properties:', old_value, new_value, type(new_value), topic)
         try:
             attr_name = topic.getName().split('.')[2]
@@ -912,7 +912,7 @@ class CanvasBaseController(UIControllerObject):
 
 
     def on_change_tick_params(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):      
+                                                      topic=publisher.AUTO_TOPIC):      
 
         #
 #        print ('\non_change_tick_params:', old_value, new_value, topic)
@@ -959,7 +959,7 @@ class CanvasBaseController(UIControllerObject):
 
 
     def on_change_minor_tick_visibility(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC): 
+                                                    topic=publisher.AUTO_TOPIC): 
         attr_name = topic.getName().split('.')[2]
         who, _, _ = attr_name.split('_') 
         axis = who[0]
@@ -969,7 +969,7 @@ class CanvasBaseController(UIControllerObject):
 
 
  
-    def on_change_lim(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):
+    def on_change_lim(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
 #        print ('\nCanvasBaseController.on_change_lim:', old_value, new_value, topic.getName())
         key = topic.getName().split('.')[2]
         axis = key[0] # x or y  
@@ -984,7 +984,7 @@ class CanvasBaseController(UIControllerObject):
             
             
       
-    def on_change_scale(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):
+    def on_change_scale(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
 #        print ('\nnCanvasBaseController.on_change_scale:', old_value, new_value, topic.getName())
         key = topic.getName().split('.')[2]
         if new_value not in CANVAS_SCALES:

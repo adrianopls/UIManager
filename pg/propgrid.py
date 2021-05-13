@@ -4,11 +4,12 @@ import wx
 import wx.propgrid as pg 
 import matplotlib.colors as mcolors
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject                                  
-import app.pubsub as pub
-from app.app_utils import MPL_COLORS, MPL_COLORMAPS
+from .. import UIManager
+from .. import UIControllerObject 
+from .. import UIViewObject                    
+
+from .. import publisher  
+from .. import mpl_utils 
 
 
 class GripyPgProperty(object):
@@ -225,7 +226,7 @@ class MPLColorsProperty(EnumProperty):
                  opt_labels=[], opt_values=None, values=None, value=0):
         
         super().__init__(obj_uid, obj_attr, label=label, 
-                                            opt_labels=list(MPL_COLORS.keys()))
+                                            opt_labels=list(mpl_utils.MPL_COLORS.keys()))
 
 
 
@@ -235,7 +236,7 @@ class MPLColormapsProperty(EnumProperty):
                  opt_labels=[], opt_values=None, values=None, value=0):
         
         super().__init__(obj_uid, obj_attr, label=label, 
-                                            opt_labels=list(MPL_COLORMAPS))
+                                            opt_labels=list(mpl_utils.MPL_COLORMAPS))
 
 
 class MPLScaleProperty(EnumProperty):    
@@ -332,10 +333,10 @@ class ColourProperty(pg.ColourProperty, GripyPgProperty):
  
     def ValueToString(self, value, flag):
         ret_str = ''
-        mpl_colors_values_list = list(MPL_COLORS.values())
+        mpl_colors_values_list = list(mpl_utils.MPL_COLORS.values())
         if wx.Colour(value) in mpl_colors_values_list:
             idx = mpl_colors_values_list.index(wx.Colour(value))
-            ret_str = list(MPL_COLORS.keys())[idx]
+            ret_str = list(mpl_utils.MPL_COLORS.keys())[idx]
         #
         mpl_colors_od = OrderedDict(mcolors.get_named_colors_mapping())
         mpl_colors_values_list = list(mpl_colors_od.values())
@@ -620,7 +621,7 @@ class PropertyGridController(UIControllerObject):
 #        print('Removed properties for:', obj_uid, ' OK!')
 
 
-    def refresh_property(self, new_value, old_value, topicObj=pub.AUTO_TOPIC):
+    def refresh_property(self, new_value, old_value, topicObj=publisher.AUTO_TOPIC):
         """
         Refresh a property, when it is changed.
         """

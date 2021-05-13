@@ -490,7 +490,7 @@ class TopLevelController(UIControllerObject):
     }
     # TODO: Use icon from App parameters          
     _ATTRIBUTES['icon'] = {
-            'default_value': 'basic/icons/logo-transp.ico',
+            'default_value': '',
             'type': str
     }
     _ATTRIBUTES['style'] = {

@@ -2,11 +2,11 @@
 
 import wx
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
-from classes.ui  import MenuBarController
-from app import log
+from . import UIManager
+from . import UIControllerObject 
+from . import UIViewObject 
+from . import MenuBarController
+#from app import log
 
 
 class MenuController(UIControllerObject):

@@ -2,10 +2,10 @@
 
 import wx
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
-from app import log
+from . import UIManager
+from . import UIControllerObject 
+from . import UIViewObject 
+#from app import log
 
 
 class MenuBarController(UIControllerObject):
@@ -15,7 +15,7 @@ class MenuBarController(UIControllerObject):
     def __init__(self, **state):
         super().__init__(**state)
         class_full_name = str(self.__class__.__module__) + '.' + str(self.__class__.__name__)    
-        log.debug('Successfully created Controller object from class: {}.'.format(class_full_name))
+#        log.debug('Successfully created Controller object from class: {}.'.format(class_full_name))
         
    
 class MenuBarView(UIViewObject, wx.MenuBar):

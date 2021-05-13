@@ -2,13 +2,13 @@
 import wx
 from matplotlib import style as mstyle 
 
-from classes.ui import WorkPageController
-from classes.ui import WorkPage
-from classes.ui import PlotStatusBar
-from classes.ui import interface
-from classes.ui import UIManager
-from app import log
-from app.app_utils import GripyBitmap  
+from . import WorkPageController
+from . import WorkPage
+from . import PlotStatusBar
+from . import interface
+from . import UIManager
+#from app import log
+from .base_wx.bitmap import UIBitmap
 
 
 

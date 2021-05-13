@@ -1,12 +1,12 @@
 
 import wx
 
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
-from classes.ui import interface
+from . import UIManager
+from . import UIControllerObject 
+from . import UIViewObject 
+#from app import log
+from . import interface
 
-from app import log
 
 
 class WorkPageController(UIControllerObject):

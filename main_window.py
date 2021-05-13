@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import wx
 import wx.aui as aui
-from classes.ui import UIManager
+from . import UIManager
 
-from classes.ui import FrameController
-from classes.ui import Frame
-from app.app_utils import GripyBitmap
-from app import log
+from . import FrameController
+from . import Frame
+from .base_wx.bitmap import UIBitmap
+#from app import log
 
 
 class MainWindowController(FrameController):
@@ -33,12 +33,12 @@ class MainWindow(Frame):
         #
         self.main_area_panel = wx.Panel(self)
         
-        bmp_filename = "gripy_logo.jpg"
-        bmp = GripyBitmap(bmp_filename)
-        self._static_bmp = wx.StaticBitmap(self.main_area_panel, wx.ID_ANY, 
-                                    bmp, wx.Point(0, 0), 
-                                    bmp.GetSize()
-        )  
+        # bmp_filename = "gripy_logo.jpg"
+        # bmp = GripyBitmap(bmp_filename)
+        # self._static_bmp = wx.StaticBitmap(self.main_area_panel, wx.ID_ANY, 
+        #                             bmp, wx.Point(0, 0), 
+        #                             bmp.GetSize()
+        # )  
         self.main_area_panel.SetBackgroundColour('white')
         
         self._mgr.AddPane(self.main_area_panel, 
@@ -48,7 +48,7 @@ class MainWindow(Frame):
         #
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self._notebook, 1, flag=wx.EXPAND)
-        sizer.Add(self._static_bmp, 1, flag=wx.EXPAND)
+#        sizer.Add(self._static_bmp, 1, flag=wx.EXPAND)
         #
         self._notebook.Show(False)
         #
@@ -121,7 +121,7 @@ class MainWindow(Frame):
 #       TODO: Coloar exibir mensagem de saida aqui...       
 #        if event.CanVeto():
 #            print ('') 
-        wx.GetApp().PreExit()
+       # wx.GetApp().PreExit()
         wx.CallAfter(self.Destroy)
 
 

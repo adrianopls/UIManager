@@ -8,11 +8,11 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.lines import Line2D
 from matplotlib.ticker import NullLocator
 
-from app import log
-from classes.ui import UIManager
-from classes.ui import UIControllerObject 
-from classes.ui import UIViewObject 
-from classes.ui import SelectablePanelMixin
+#from app import log
+from . import UIManager
+from . import UIControllerObject 
+from . import UIViewObject 
+from . import SelectablePanelMixin
 
 
 

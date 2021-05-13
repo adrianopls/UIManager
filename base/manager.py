@@ -126,9 +126,9 @@ class UIManager(GenericManager):
         if controller_parent_class:
             parent_full_name = str(controller_parent_class.__module__) + '.' + \
                                         str(controller_parent_class.__name__)
-            log.info('UIManager registered class {} for parent class {} successfully.'.format(class_full_name, parent_full_name))
-        else:    
-            log.info('UIManager registered class {} successfully.'.format(class_full_name))                          
+#            log.info('UIManager registered class {} for parent class {} successfully.'.format(class_full_name, parent_full_name))
+#        else:    
+#            log.info('UIManager registered class {} successfully.'.format(class_full_name))                          
         return True
       
         
@@ -146,7 +146,7 @@ class UIManager(GenericManager):
         try:
             class_ = self._check_controller_tid(controller_tid)
         except Exception as e:
-            log.exception('Error during calling UIManager.create({}, {})'.format(controller_tid, parent_uid))
+#            log.exception('Error during calling UIManager.create({}, {})'.format(controller_tid, parent_uid))
             raise e          
         if parent_uid is None:
             parent_obj = parent_tid = None
@@ -170,7 +170,7 @@ class UIManager(GenericManager):
             obj = class_(**base_state)
         except Exception:
             msg = 'ERROR found in Controller {} creation.'.format(class_.__name__)      
-            log.exception(msg)
+#            log.exception(msg)
             raise
         self._data[obj.uid] = obj      
         self._parentuidmap[obj.uid] = parent_uid
@@ -182,13 +182,13 @@ class UIManager(GenericManager):
         except Exception as e:
             print (e)
             msg = 'ERROR found in View creation for class {}.'.format(class_.__name__)      
-            log.exception(msg)
+#            log.exception(msg)
             raise         
         try:
             obj._PostInit()
         except Exception:
             msg = 'Error found in {}._PostInit(). Object was not created.'.format(obj.__class__.__name__)
-            log.exception(msg)
+#            log.exception(msg)
             
         self.send_message('create', objuid=obj.uid, parentuid=parent_uid)    
         return obj

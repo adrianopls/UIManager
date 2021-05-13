@@ -2,12 +2,12 @@
 
 import wx
 
-from app import pubsub 
-from app import log
-from classes.ui import UIManager
-from classes.ui import CanvasBaseController
-from classes.ui import CanvasBaseView
-from classes.ui import SelectablePanelMixin
+from . import publisher 
+#from app import log
+from . import UIManager
+from . import CanvasBaseController
+from . import CanvasBaseView
+from . import SelectablePanelMixin
 
 # On linear X axis scale, base_axis limits will be fixed as below
 XMAX_PLUS = 0.0
@@ -135,7 +135,7 @@ class TrackCanvasController(CanvasBaseController):
 
    
     def on_change_ygrid_major_lines(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             self.view.set_ygrid_major_lines(new_value)
         except:
@@ -144,7 +144,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()
 
     def on_change_ygrid_minor_lines(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             self.view.set_ygrid_minor_lines(new_value)
         except:
@@ -153,7 +153,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()
         
     def on_change_leftscale(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             if new_value <= 0:
                 raise ValueError('Wrong value for leftscale. ' + \
@@ -167,7 +167,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()     
 
     def on_change_decades(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             if new_value <= 0:
                 raise ValueError('Wrong value for decades. ' + \
@@ -181,7 +181,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()     
             
     def on_change_minorgrid(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             self.view.set_minorgrid(new_value)
         except:
@@ -190,7 +190,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()              
 
     def on_change_scale_lines(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             self.view.set_scale_lines(new_value)
         except:
@@ -200,7 +200,7 @@ class TrackCanvasController(CanvasBaseController):
         
         
     def on_change_depth_lines(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):  
+                                                      topic=publisher.AUTO_TOPIC):  
 #        print ('\n\n\non_change_depth_lines:', old_value, new_value, topic)
         try:
             self.view.set_depth_lines(new_value)
@@ -211,7 +211,7 @@ class TrackCanvasController(CanvasBaseController):
             
             
     def on_change_plotgrid(self, old_value, new_value, 
-                                                    topic=pubsub.AUTO_TOPIC):          
+                                                    topic=publisher.AUTO_TOPIC):          
         try:
             self.view.set_plotgrid(new_value)
         except:
@@ -220,7 +220,7 @@ class TrackCanvasController(CanvasBaseController):
             self.view.draw()           
             
             
-    def on_change_lim(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):   
+    def on_change_lim(self, old_value, new_value, topic=publisher.AUTO_TOPIC):   
 #        print ('\nTrackCanvasController.on_change_lim:', old_value, new_value, topic.getName())
         
         key = topic.getName().split('.')[2]
@@ -240,7 +240,7 @@ class TrackCanvasController(CanvasBaseController):
 
 
 
-    def on_change_scale(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):
+    def on_change_scale(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
 #        print ('\n\nTrackCanvasController.on_change_scale:', old_value, new_value, topic.getName())
                 
         key = topic.getName().split('.')[2]
@@ -285,7 +285,7 @@ class TrackCanvasController(CanvasBaseController):
     # TODO: Check if it is the best way        
     # Overriding super class method
     def on_change_figure_facecolor(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
         key = topic.getName().split('.')[2]
         self.set_value_from_event(key, old_value)
             
@@ -293,14 +293,14 @@ class TrackCanvasController(CanvasBaseController):
     # TODO: Check if it is the best way        
     # Overriding super class method
     def on_change_spine_visibility(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):  
+                                                      topic=publisher.AUTO_TOPIC):  
         key = topic.getName().split('.')[2]
         self.set_value_from_event(key, old_value)
         
     # TODO: Check if it is the best way        
     # Overriding super class method
     def on_change_axis_visibility(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):   
+                                                      topic=publisher.AUTO_TOPIC):   
         key = topic.getName().split('.')[2]
         self.set_value_from_event(key, old_value)
         
@@ -309,7 +309,7 @@ class TrackCanvasController(CanvasBaseController):
     # TODO: Check if it is the best way        
     # Overriding super class method
     def on_change_axes_properties(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
         key = topic.getName().split('.')[2]
         self.set_value_from_event(key, old_value)
 
@@ -317,14 +317,14 @@ class TrackCanvasController(CanvasBaseController):
         
     # TODO: Check if it is the best way        
     # Overriding super class method
-    def on_change_text_properties(self, old_value, new_value, topic=pubsub.AUTO_TOPIC): 
+    def on_change_text_properties(self, old_value, new_value, topic=publisher.AUTO_TOPIC): 
         key = topic.getName().split('.')[2]
         self.set_value_from_event(key, old_value) 
 
 
 
     def on_change_grid_parameters(self, old_value, new_value, 
-                                                      topic=pubsub.AUTO_TOPIC):
+                                                      topic=publisher.AUTO_TOPIC):
         param_key = topic.getName().split('.')[2]
         key_type = param_key.split('_')[0]
         # grid keys are unchangeable (grid_color, grid_alpha, grid_linestyle and grid_linewidth)
@@ -357,10 +357,10 @@ class TrackCanvasController(CanvasBaseController):
 
 # ESSES 2 METODOS ABAIXO PRECISAM SER DECIDIDOS ONDE FICARAO
  
-#    def on_change_locator(self, old_value, new_value, topic=pubsub.AUTO_TOPIC):           
+#    def on_change_locator(self, old_value, new_value, topic=publisher.AUTO_TOPIC):           
 
 #    def on_change_tick_params(self, old_value, new_value, 
-#                                                      topic=pubsub.AUTO_TOPIC):      
+#                                                      topic=publisher.AUTO_TOPIC):      
 
 
 ###############################################################################

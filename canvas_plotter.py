@@ -1,10 +1,10 @@
 from collections import OrderedDict
 
-from app.app_utils import DropTarget
-from classes.ui import UIManager
-from classes.ui import CanvasBaseController
-from classes.ui import CanvasBaseView
-from app import log
+#from app.app_utils import DropTarget
+from . import UIManager
+from . import CanvasBaseController
+from . import CanvasBaseView
+#from app import log
 
 
 
@@ -721,11 +721,11 @@ class CanvasPlotter(CanvasBaseView):
     def PostInit(self):
         super().PostInit()
         #
-        drop_target = DropTarget(self.is_valid_object,
-                              self.append_object
-        )            
-        self.SetDropTarget(drop_target)   
-        #
+        # drop_target = DropTarget(self.is_valid_object,
+        #                       self.append_object
+        # )            
+        # self.SetDropTarget(drop_target)   
+        # #
 
 
     def is_valid_object(self, obj_uid):

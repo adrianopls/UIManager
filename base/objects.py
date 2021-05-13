@@ -12,7 +12,7 @@ import wx
 
 #import app
 #from app import log
-from classes.GenericManager.generic_object import GenericObject
+from .. import GenericObject
 #from classes.om import ObjectManager
 #from classes.ui import UIManager
 
@@ -84,11 +84,11 @@ class UIControllerObject(UIBaseObject):
         """
         #TODO: This Method do the function Delegation to View class
         try:
-            return GripyObject.__getattribute__(self, key)
+            return GenericObject.__getattribute__(self, key)
         except AttributeError:
             try:
                 # Method Delegation to View class
-                return GripyObject.__getattribute__(self.view, key)
+                return GenericObject.__getattribute__(self.view, key)
             except:
                 pass
             raise 
@@ -107,7 +107,7 @@ class UIControllerObject(UIBaseObject):
                 self.view = view_class(self.uid)
             except Exception as e:
                 msg = 'ERROR on creating MVC view {} object: {}'.format(view_class.__name__, e)
-                log.exception(msg)
+#                log.exception(msg)
                 print ('\n', msg, view_class, '\n')
                 raise e             
         else:
@@ -123,14 +123,14 @@ class UIControllerObject(UIBaseObject):
                 self.view.PostInit()
         except Exception as e:
             msg = 'ERROR in {}.PostInit: {}'.format(self.view.__class__.__name__, e)
-            log.exception(msg)
+#            log.exception(msg)
             print ('\n' + msg)
             raise
         try:                
             self.PostInit()    
         except Exception as e:
             msg = 'ERROR in {}.PostInit: {}'.format(self.__class__.__name__, e)
-            log.exception(msg)
+#            log.exception(msg)
             print ('\n', msg)
             raise
 
