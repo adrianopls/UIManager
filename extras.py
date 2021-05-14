@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 
 import wx
-
 
 
 # TODO: Parametros: levar para App.utils ou Parameters.manager

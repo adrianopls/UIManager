@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
 
 import wx
 
 from . import UIManager
 from . import UIControllerObject 
-from . import UIViewObject 
-#from app import log
+from . import UIViewObject
 from . import MainWindowController
-
 
 
 class ToolBarController(UIControllerObject):

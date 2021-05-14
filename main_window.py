@@ -1,14 +1,11 @@
-# -*- coding: utf-8 -*-
+
 import wx
 import wx.aui as aui
-from . import UIManager
 
+from . import UIManager
 from . import FrameController
 from . import Frame
 from .base_wx.bitmap import UIBitmap
-#from app import log
-
-
 
 
 class MainWindowController(FrameController):

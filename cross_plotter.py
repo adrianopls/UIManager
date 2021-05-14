@@ -7,7 +7,6 @@ from . import WorkPage
 from . import PlotStatusBar
 
 from . import UIManager
-#from app import log
 from .base_wx.bitmap import UIBitmap
 
 

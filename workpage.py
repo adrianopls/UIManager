@@ -1,12 +1,11 @@
 
+import logging
+
 import wx
 
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
-#from app import log
-#from . import interface
-
 
 
 class WorkPageController(UIControllerObject):
@@ -59,7 +58,7 @@ class WorkPage(UIViewObject, wx.Panel):
         )
         #
         if not result:
-            log.error('Page could not be inserted in MainWindow notebook.')
+            logging.error('Page could not be inserted in MainWindow notebook.')
         #    
         controller.subscribe(self._set_title, 'change.title')            
         controller.subscribe(self._set_pos, 'change.pos')

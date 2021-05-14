@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 
 import wx
 
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
-#from app import log
+
 
 
 class MenuBarController(UIControllerObject):
@@ -14,9 +13,7 @@ class MenuBarController(UIControllerObject):
     
     def __init__(self, **state):
         super().__init__(**state)
-        class_full_name = str(self.__class__.__module__) + '.' + str(self.__class__.__name__)    
-#        log.debug('Successfully created Controller object from class: {}.'.format(class_full_name))
-        
+
    
 class MenuBarView(UIViewObject, wx.MenuBar):
     tid = 'menubar_view'
@@ -31,7 +28,3 @@ class MenuBarView(UIViewObject, wx.MenuBar):
         wx_parent = parent_controller._get_wx_parent()
         wx_parent.SetMenuBar(self)
         
-
-        #class_full_name = str(self.__class__.__module__) + '.' + str(self.__class__.__name__)    
-        #log.debug('Successfully created View object from class: {}.'.format(class_full_name))
-           

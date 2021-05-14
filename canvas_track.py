@@ -3,7 +3,6 @@
 import wx
 
 from . import publisher 
-#from app import log
 from . import UIManager
 from . import CanvasBaseController
 from . import CanvasBaseView

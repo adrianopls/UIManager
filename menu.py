@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+
+import logging
 
 import wx
 
@@ -6,7 +7,7 @@ from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
 from . import MenuBarController
-#from app import log
+
 
 
 class MenuController(UIControllerObject):
@@ -62,7 +63,7 @@ class MenuView(UIViewObject, wx.Menu):
         wx.Menu.__init__(self)
 
     def PostInit(self):
-#        log.debug('{}.PostInit started'.format(self.name))
+        logging.debug('{}.PostInit started'.format(self.name))
         UIM = UIManager()
         controller = UIM.get(self._controller_uid)
         parent_controller_uid = UIM._getparentuid(self._controller_uid)
@@ -75,7 +76,7 @@ class MenuView(UIViewObject, wx.Menu):
             if controller.pos >  parent_controller.view.GetMenuItemCount():
                 # If pos was setted out of range for inserting in parent Menu
                 msg = 'Invalid position for Menu with label={}. Position will be setting to {}'.format(controller.label, parent_controller.view.GetMenuItemCount())
-                log.warning(msg)
+                logging.debug(msg)
                 controller.pos = parent_controller.view.GetMenuCount() 
             parent_controller.view.Insert(controller.pos, 
                                               controller.id, 
@@ -90,14 +91,14 @@ class MenuView(UIViewObject, wx.Menu):
             if controller.pos >  parent_controller.view.GetMenuCount():
                 # If pos was setted out of range for inserting in parent Menu
                 msg = 'Invalid position for Menu with label={}. Position will be setting to {}'.format(controller.label, parent_controller.view.GetMenuCount())
-                log.warning(msg)
+                logging.debug(msg)
                 controller.pos = parent_controller.view.GetMenuCount()
             ret_val = parent_controller.view.Insert(controller.pos, self, controller.label)
             if not ret_val:
                 raise Exception()
         else:
             raise Exception()  
-#        log.debug('{}.PostInit ended'.format(self.name))   
+        logging.debug('{}.PostInit ended'.format(self.name))   
 
     def _InsertItem(self, pos, menu_item_view):
         self.Insert(pos, menu_item_view)

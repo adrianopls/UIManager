@@ -5,14 +5,13 @@ Created on Sat Aug 25 20:45:36 2018
 @author: Adriano
 """
 
-
+import logging
 import gc
 from collections import OrderedDict
 
 import wx
 
 import app
-#from app import log
 from classes.GenericManager.generic_manager import GenericManager
 
 from .objects import UIControllerObject
@@ -68,12 +67,12 @@ class UIManager(GenericManager):
         #
         if controller_class is None:
             msg = "Controller class cannot be None"
-            log.exception(msg)
+            logging.exception(msg)
             raise TypeError(msg)
         #    
         if not issubclass(controller_class, UIControllerObject):
             msg = "Controller class must inherit from UIControllerObject."
-            log.exception(msg)
+            logging.exception(msg)
             raise TypeError(msg)           
         #    
         cls._types[controller_class.tid] = controller_class 
@@ -92,23 +91,23 @@ class UIManager(GenericManager):
         else:
             if view_class_tid != cls._MVC_CLASSES.get(controller_class.tid):
                 msg = 'Cannot register another view for controller {}'.format(controller_class.tid)
-                log.exception(msg)
+                logging.exception(msg)
                 raise Exception(msg)
         #        
         if controller_parent_class:
             try:
                 if controller_parent_class.tid is None:
                     msg = "Controller parent class tid cannot be None."
-                    log.exception(msg)
+                    logging.exception(msg)
                     raise TypeError(msg)
                 if controller_parent_class.tid not in cls._MVC_CLASSES.keys():
                     msg = "Type {} is not registered".format(controller_parent_class.tid)
-                    log.exception(msg)
+                    logging.exception(msg)
                     raise TypeError(msg)
                 parent_class = cls._types.get(controller_parent_class.tid)
                 if not issubclass(parent_class, UIControllerObject):
                     msg = "Type {} is not instance of UIControllerObject.".format(controller_parent_class)
-                    log.exception(msg)                    
+                    logging.exception(msg)                    
                     raise TypeError(msg)                  
             except Exception:
                 raise
@@ -126,9 +125,9 @@ class UIManager(GenericManager):
         if controller_parent_class:
             parent_full_name = str(controller_parent_class.__module__) + '.' + \
                                         str(controller_parent_class.__name__)
-#            log.info('UIManager registered class {} for parent class {} successfully.'.format(class_full_name, parent_full_name))
-#        else:    
-#            log.info('UIManager registered class {} successfully.'.format(class_full_name))                          
+            logging.debug('UIManager registered class {} for parent class {} successfully.'.format(class_full_name, parent_full_name))
+        else:    
+            logging.debug('UIManager registered class {} successfully.'.format(class_full_name))                          
         return True
       
         
@@ -146,7 +145,7 @@ class UIManager(GenericManager):
         try:
             class_ = self._check_controller_tid(controller_tid)
         except Exception as e:
-#            log.exception('Error during calling UIManager.create({}, {})'.format(controller_tid, parent_uid))
+            logging.exception('Error during calling UIManager.create({}, {})'.format(controller_tid, parent_uid))
             raise e          
         if parent_uid is None:
             parent_obj = parent_tid = None
@@ -170,7 +169,7 @@ class UIManager(GenericManager):
             obj = class_(**base_state)
         except Exception:
             msg = 'ERROR found in Controller {} creation.'.format(class_.__name__)      
-#            log.exception(msg)
+            logging.exception(msg)
             raise
         self._data[obj.uid] = obj      
         self._parentuidmap[obj.uid] = parent_uid
@@ -182,13 +181,13 @@ class UIManager(GenericManager):
         except Exception as e:
             print (e)
             msg = 'ERROR found in View creation for class {}.'.format(class_.__name__)      
-#            log.exception(msg)
+            logging.exception(msg)
             raise         
         try:
             obj._PostInit()
         except Exception:
             msg = 'Error found in {}._PostInit(). Object was not created.'.format(obj.__class__.__name__)
-#            log.exception(msg)
+            logging.exception(msg)
             
         self.send_message('create', objuid=obj.uid, parentuid=parent_uid)    
         return obj
@@ -296,7 +295,7 @@ class UIManager(GenericManager):
     
     def remove(self, uid):
         msg = 'Removing object from UI Manager: {}.'.format(uid)
-        log.debug(msg)
+        logging.debug(msg)
 #        print ('\n' + msg)
         
         self.send_message('pre_remove', objuid=uid)
@@ -312,7 +311,7 @@ class UIManager(GenericManager):
         if obj.view:
             msg = 'Deleting UI view object {}.'.format(obj.view.uid)
 #            print (msg)
-            log.debug(msg)
+            logging.debug(msg)
             
 #            try:
             obj.view.unsubAll() 
@@ -337,13 +336,13 @@ class UIManager(GenericManager):
         del self._data[uid]  
         msg = 'Deleting UI controller object {}.'.format(uid)
         #print msg
-        log.debug(msg)
+        logging.debug(msg)
         # Finally, deletes the controller
         del obj
         gc.collect()
         self.send_message('post_remove', objuid=uid)
         msg = 'UI Manager removed sucessfully {}.'.format(uid) 
-        log.debug(msg)    
+        logging.debug(msg)    
 #        print (msg)
         return True
 
@@ -377,20 +376,17 @@ class UIManager(GenericManager):
     # TODO: escolher um melhor nome para este método
     def close(self):
         msg = 'UI Manager has received a close call.'
-        log.info(msg)
+        logging.info(msg)
         print (msg)
         #print
         #self.print_info()
         for top_level_uid in self._get_top_level_uids():
             print ('Removing ' + str(top_level_uid))
             self.remove(top_level_uid)
-        #msg = 'ENDS.'
-        #log.info(msg)
-        #print ('\n' + msg)
-        #print
+
 #        self.print_info()    
         msg = 'UI Manager has closed.'
-        log.info(msg)
+        logging.info(msg)
         print (msg + '\n')
 
 
@@ -521,7 +517,7 @@ class UIManager(GenericManager):
                     self.create(obj_tid, parent_uid=parent_uid) 
             except Exception:
                 msg = 'ERROR in loading UI state.'
-                log.exception(msg)
+                logging.exception(msg)
                 raise
               
 
@@ -550,30 +546,30 @@ class UIManager(GenericManager):
                         self._load_application_state(child, new_created_obj.uid)
             except Exception:
                 msg = 'ERROR in loading UI state.'
-                log.exception(msg)
+                logging.exception(msg)
                 raise
             '''        
 
     def load_application_state_from_file(self, fullfilename):
         msg = 'Loading Gripy application UI from file {}'.format(fullfilename)
         print msg
-        log.debug(msg)
+        logging.debug(msg)
         _state = App.app_utils.read_json_file(fullfilename)
         self._load_application_state(_state)        
         msg = 'Gripy application UI loaded.'
         print msg
-        log.debug(msg)
+        logging.debug(msg)
  
  
     def load_user_state_from_file(self, fullfilename):
         msg = 'Loading Gripy user UI session from file {}'.format(fullfilename)
         print msg
-        log.debug(msg)
+        logging.debug(msg)
         _state = App.app_utils.read_json_file(fullfilename)
         self._load_user_state(_state)        
         msg = 'Gripy user UI session loaded.'
         print msg
-        log.debug(msg)
+        logging.debug(msg)
  
 
       
@@ -584,13 +580,13 @@ class UIManager(GenericManager):
         except Exception:
             state = None
             msg = 'ERROR: UI Application State cannot be gotten from UI Manager.' 
-            log.exception(msg)
+            logging.exception(msg)
         if state is not None: 
             try:
                 App.app_utils.write_json_file(state, fullfilename)
                 msg = 'Gripy interface state was saved to file ' + fullfilename 
                 print msg
-                log.info(msg)
+                logging.info(msg)
             except Exception:
                 raise
         
@@ -601,13 +597,13 @@ class UIManager(GenericManager):
         except Exception:
             state = None
             msg = 'ERROR: UI Application State cannot be gotten from UI Manager.' 
-            log.exception(msg)
+            logging.exception(msg)
         if state is not None: 
             try:
                 App.app_utils.write_json_file(state, fullfilename)
                 msg = 'Gripy interface state was saved to file ' + fullfilename 
                 print msg
-                log.info(msg)
+                logging.info(msg)
             except Exception:
                 raise        
         

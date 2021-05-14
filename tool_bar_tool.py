@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import logging
 from types import FunctionType
@@ -7,9 +6,7 @@ import wx
 
 from . import UIManager
 from . import UIControllerObject 
-
 from . import MainWindowController
-#from app import log
 from .base_wx.bitmap import UIBitmap
 
 
@@ -46,7 +43,7 @@ class ToolBarToolController(UIControllerObject):
         super().__init__(**state)
       
     def PostInit(self):
-        log.debug('{}.AfterInit started'.format(self.name))
+        logging.debug('{}.AfterInit started'.format(self.name))
         UIM = UIManager()        
         main_window = wx.App.Get().GetTopWindow()
             

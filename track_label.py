@@ -1,3 +1,4 @@
+
 from collections import OrderedDict   
 
 import numpy as np
@@ -8,12 +9,10 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.lines import Line2D
 from matplotlib.ticker import NullLocator
 
-#from app import log
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
 from . import SelectablePanelMixin
-
 
 
 # Constants
@@ -21,12 +20,10 @@ DPI = 80
 LABEL_TITLE_HEIGHT = 40
 VALID_PLOT_TYPES = ['index', 'line', 'partition', 'density', 'wiggle']
 
-
 # TODO: Parametros: levar para App.utils ou Parameters.manager
 DEFAULT_LABEL_BG_COLOR  = '#B0C4DE' #LightSteelBlue  
 SELECTION_WIDTH = 2
 SELECTION_COLOR = 'green'
-
 
 
 def create_and_prepare_axes(figure, extent, **kwargs):

@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 
 import wx
 from wx.lib.scrolledpanel import ScrolledPanel    
  
-#from classes.ui import MultiSplitterWindow
 from .trackssplitter import MultiSplitterWindow
 
 

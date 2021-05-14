@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 
 import wx
 
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
-#from app import log
  
      
 class StatusBarController(UIControllerObject):

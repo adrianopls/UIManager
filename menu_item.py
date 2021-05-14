@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 
+import logging
 import types
 
 import wx
@@ -7,7 +7,6 @@ import wx
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
-#from app import log
 
 
 class MenuItemController(UIControllerObject):
@@ -72,26 +71,25 @@ class MenuItemView(UIViewObject, wx.MenuItem):
 
 
     def PostInit(self):
-#        log.debug('{}.PostInit started'.format(self.name))
-        _UIM = UIManager()
-        controller = _UIM.get(self._controller_uid)
-        parent_controller_uid = _UIM._getparentuid(self._controller_uid)
-        parent_controller =  _UIM.get(parent_controller_uid)
+        logging.debug('{}.PostInit started'.format(self.name))
+        UIM = UIManager()
+        controller = UIM.get(self._controller_uid)
+        parent_controller_uid = UIM._getparentuid(self._controller_uid)
+        parent_controller =  UIM.get(parent_controller_uid)
         if controller.pos == -1:
             # Appending - Not needed to declare pos
             controller.pos = parent_controller.view.GetMenuItemCount()
         if controller.pos >  parent_controller.view.GetMenuItemCount():
             # If pos was setted out of range for inserting in parent Menu
             msg = 'Invalid menu position for MenuItem with text={}. Position will be setting to {}'.format(controller.label, parent_controller.view.GetMenuItemCount())
-#            log.warning(msg)
+            logging.debug(msg)
             controller.pos = parent_controller.view.GetMenuItemCount()   
-#        log.debug('{}.PostInit ended'.format(self.name))    
+        logging.debug('{}.PostInit ended'.format(self.name))    
         #
         self.Enable(controller.enabled)
         controller.subscribe(self._set_enabled, 'change.enabled')            
         
-        
-        
+
     def _set_enabled(self, new_value, old_value):
         self.Enable(new_value)
         

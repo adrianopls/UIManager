@@ -4,7 +4,7 @@ from collections import OrderedDict
 from . import UIManager
 from . import CanvasBaseController
 from . import CanvasBaseView
-#from app import log
+
 
 
 

@@ -16,7 +16,7 @@ from .base_wx.dialog import DialogController, Dialog
 from .base_mpl import mpl_utils
  
 
-from .base.utils import TextChoiceRenderer
+#from .base.utils import TextChoiceRenderer
 #                                                
 from .pg.propgrid import PropertyGridController, PropertyGridView
 #
