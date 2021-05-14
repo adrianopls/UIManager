@@ -48,9 +48,9 @@ from .workpage import WorkPageController, WorkPage
 #from .frame_nav import NavigatorController, Navigator
 from .cross_plotter import CrossPlotController, CrossPlot
 #
-from . import interface
+#from . import interface
 #
-from . import ImportSelector
+#from . import ImportSelector
 #from . import ExportSelector
 #from . import ODTEditor
 #from . import RockTableEditor

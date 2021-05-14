@@ -5,7 +5,7 @@ from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
 #from app import log
-from . import interface
+#from . import interface
 
 
 
@@ -73,8 +73,8 @@ class WorkPage(UIViewObject, wx.Panel):
         controller = UIM.get(self._controller_uid)        
         if controller.float_mode:
             raise Exception('TRATAR DELETE ON FLOAT MODE')
-        mwc = interface.get_main_window_controller()
-        mwc.remove_notebook_page(self)
+#        mwc = interface.get_main_window_controller()
+#        mwc.remove_notebook_page(self)
         
         
     def _set_own_name(self):

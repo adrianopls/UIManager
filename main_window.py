@@ -9,6 +9,8 @@ from .base_wx.bitmap import UIBitmap
 #from app import log
 
 
+
+
 class MainWindowController(FrameController):
     tid = 'main_window_controller'
     _singleton = True
@@ -32,7 +34,7 @@ class MainWindow(Frame):
                wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)) 
         #
         self.main_area_panel = wx.Panel(self)
-        
+        #
         # bmp_filename = "gripy_logo.jpg"
         # bmp = GripyBitmap(bmp_filename)
         # self._static_bmp = wx.StaticBitmap(self.main_area_panel, wx.ID_ANY, 
@@ -40,7 +42,7 @@ class MainWindow(Frame):
         #                             bmp.GetSize()
         # )  
         self.main_area_panel.SetBackgroundColour('white')
-        
+        #
         self._mgr.AddPane(self.main_area_panel, 
                         aui.AuiPaneInfo().Name("main_area_panel").CenterPane())    
         #

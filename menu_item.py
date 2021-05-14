@@ -29,9 +29,11 @@ class MenuItemController(UIControllerObject):
         'kind': {'default_value': wx.ITEM_NORMAL, 
                  'type': int
         },
+        'enabled': {'default_value': True, 
+                 'type': bool
+        },
         'callback': {'default_value': None, 
-                     'type': types.FunctionType
-                     
+                     'type': types.FunctionType            
         }
     }
         
@@ -68,8 +70,9 @@ class MenuItemView(UIViewObject, wx.MenuItem):
             print (e)
             raise
 
+
     def PostInit(self):
-        log.debug('{}.PostInit started'.format(self.name))
+#        log.debug('{}.PostInit started'.format(self.name))
         _UIM = UIManager()
         controller = _UIM.get(self._controller_uid)
         parent_controller_uid = _UIM._getparentuid(self._controller_uid)
@@ -80,9 +83,18 @@ class MenuItemView(UIViewObject, wx.MenuItem):
         if controller.pos >  parent_controller.view.GetMenuItemCount():
             # If pos was setted out of range for inserting in parent Menu
             msg = 'Invalid menu position for MenuItem with text={}. Position will be setting to {}'.format(controller.label, parent_controller.view.GetMenuItemCount())
-            log.warning(msg)
+#            log.warning(msg)
             controller.pos = parent_controller.view.GetMenuItemCount()   
-        log.debug('{}.PostInit ended'.format(self.name))    
-
-
-            
+#        log.debug('{}.PostInit ended'.format(self.name))    
+        #
+        self.Enable(controller.enabled)
+        controller.subscribe(self._set_enabled, 'change.enabled')            
+        
+        
+        
+    def _set_enabled(self, new_value, old_value):
+        self.Enable(new_value)
+        
+        
+        
+        

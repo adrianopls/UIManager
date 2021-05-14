@@ -5,7 +5,7 @@ from matplotlib import style as mstyle
 from . import WorkPageController
 from . import WorkPage
 from . import PlotStatusBar
-from . import interface
+
 from . import UIManager
 #from app import log
 from .base_wx.bitmap import UIBitmap
@@ -110,7 +110,7 @@ class CrossPlot(WorkPage):
 
     def _OnEditFormat(self, event): 
         cpc = self.get_canvas_plotter_controller()
-        interface.create_properties_dialog(cpc.uid, size=(600, 600))
+        create_properties_dialog(cpc.uid, size=(600, 600))
 
     def _on_change_tool(self, event): 
         if event.GetId() == CP_NORMAL_TOOL:
@@ -198,3 +198,19 @@ class CrossPlot(WorkPage):
         cc.load_style(lib_name)
 
 
+
+def create_properties_dialog(obj_uid, size=None):
+    if not size:
+        size = (300, 330)
+    UIM = UIManager()
+    try:      
+        dlg = UIM.create('object_properties_dialog_controller')
+        #print(dlg)
+        dlg.obj_uid = obj_uid
+        dlg.view.SetSize(size)
+        dlg.view.ShowModal()            
+    except Exception as e:
+        print ('\nERROR create_properties_dialog:', e)
+        raise
+    finally:
+        UIM.remove(dlg.uid)    

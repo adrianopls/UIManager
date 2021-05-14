@@ -733,8 +733,8 @@ class CanvasPlotter(CanvasBaseView):
     
     
     # Method for Drag and Drop....
-    def append_object(self, obj_uid):
-        print('\nCanvasPlotter.append_object:', obj_uid)
+    # def append_object(self, obj_uid):
+    #     print('\nCanvasPlotter.append_object:', obj_uid)
   
    
     
