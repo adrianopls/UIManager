@@ -1,5 +1,5 @@
 
-
+from ..GenericManager.metaclasses import GenericMeta
 from ..GenericManager.generic_object import GenericObject
 from ..GenericManager.generic_manager import GenericManager
 from ..GenericManager import publisher

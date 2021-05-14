@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import logging
 from types import MethodType
@@ -6,9 +5,10 @@ from types import MethodType
 import wx
 
 from .. import GenericObject
+from .metaclasses import GenericWxMeta
 
 
-class UIBaseObject(GenericObject):
+class UIBaseObject(GenericObject, metaclass=GenericWxMeta):
     """
     UIBaseObject é usado para separar as classes de UI das demais. Assim sendo,
     todas as classes de interface devem herdar, direta ou indiretamente, desta.
@@ -42,10 +42,6 @@ class UIBaseObject(GenericObject):
             print ('ERROR: _auto_removal ', e)
             raise
 
-
-###############################################################################
-###############################################################################
-                                 
 
 class UIControllerObject(UIBaseObject):
     """

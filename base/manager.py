@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 25 20:45:36 2018
-
-@author: Adriano
-"""
 
 import logging
 import gc
@@ -13,7 +7,6 @@ import wx
 
 import app
 from classes.GenericManager.generic_manager import GenericManager
-
 from .objects import UIControllerObject
 
 
