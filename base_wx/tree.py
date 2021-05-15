@@ -25,7 +25,7 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         parent_controller =  UIM.get(parent_controller_uid)  
         #
         wx.TreeCtrl.__init__(self, parent_controller.view, -1, 
-                             wx.Point(200, 220), wx.Size(200, 250),
+                             wx.Point(0, 0), wx.Size(200, 250),
                              wx.TR_DEFAULT_STYLE | wx.NO_BORDER
         )
         #

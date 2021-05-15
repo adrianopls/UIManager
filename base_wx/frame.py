@@ -40,6 +40,10 @@ class Frame(TopLevel, wx.Frame):
         if controller.maximized:
             self.Maximize()               
         # TODO: Bind para a super class???    
+        #
+        # self.base_panel = wx.Panel(self)
+        # self.base_panel.SetBackgroundColour(wx.ColourDatabase().Find("AQUAMARINE"))
+        #
         self.Bind(wx.EVT_MAXIMIZE, self.on_maximize)       
         self.Bind(wx.EVT_SIZE, self.on_size)    
         self.Bind(wx.EVT_MOVE, self.on_move)    
