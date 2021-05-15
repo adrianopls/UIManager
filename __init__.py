@@ -1,8 +1,8 @@
 
-from ..GenericManager.metaclasses import GenericMeta
-from ..GenericManager.generic_object import GenericObject
-from ..GenericManager.generic_manager import GenericManager
-from ..GenericManager import publisher
+from ..gm.metaclasses import GenericMeta
+from ..gm.generic_object import GenericObject
+from ..gm.generic_manager import GenericManager
+from ..gm import publisher
 
 from .base.objects import UIBaseObject
 from .base.objects import UIControllerObject

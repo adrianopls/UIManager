@@ -6,7 +6,7 @@ from collections import OrderedDict
 import wx
 
 import app
-from classes.GenericManager.generic_manager import GenericManager
+from classes.gm.generic_manager import GenericManager
 from .objects import UIControllerObject
 
 
