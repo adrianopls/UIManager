@@ -11,7 +11,6 @@ from .objects import UIControllerObject
 
 
 class UIManager(GenericManager):
-    #tid = 'ui_manager'
     _data = OrderedDict()
     _types = OrderedDict()
     _currentobjectids = {}
@@ -39,19 +38,6 @@ class UIManager(GenericManager):
 #        main_ctrl_view = wx.App.Get().GetTopWindow()
 #        controller_uid = main_ctrl_view._controller_uid
 #        return self.get(controller_uid)
-
-
-    #### Remover isso assim que possivel
-    def print_info(self):
-        print ('\nUIManager.print_info:')
-        print ('UIManager._data: ', UIManager._data)
-        #print ('UIManager._types: ', UIManager._types)
-        #print ('UIManager._currentobjectids: ', UIManager._currentobjectids)
-        print ('UIManager._parentuidmap: ', UIManager._parentuidmap)
-        print ('UIManager._childrenuidmap: ', UIManager._childrenuidmap)
-        print ('UIManager._parenttidmap: ', UIManager._parenttidmap)
-        #print ('UIManager._MVC_CLASSES: ', UIManager._MVC_CLASSES)    
-    ####
 
 
     @classmethod
@@ -245,16 +231,14 @@ class UIManager(GenericManager):
         """
         return self._parentuidmap.get(uid)
                
- 
-    
-    
+
     def _prepare_object_for_deletion(self, obj):
         """
         """
         try:
             # With detach, controller will not receiver messages of object 
             # deletion from ObjectManager. 
-            obj.detach()
+            #obj.detach()
             
             # Unsubscribing listeners from controller, this implies controller
             # will not send messages anymore.
@@ -266,8 +250,7 @@ class UIManager(GenericManager):
         except:
             raise
             
-            
-    
+
     # Before exit application
     def PreExit(self):
 #        print ('\nUIManager PreExit')

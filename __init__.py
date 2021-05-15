@@ -12,6 +12,7 @@ from .base.manager import UIManager
 
 from .base_wx.frame import FrameController, Frame
 from .base_wx.dialog import DialogController, Dialog
+from .base_wx.tree import TreeController, TreeView
 
 from .base_mpl import mpl_utils
  

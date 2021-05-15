@@ -1,9 +1,12 @@
+
+import logging
+
 import wx
 
 from ..base.manager import UIManager
 from .toplevel import  TopLevelController, TopLevel
-
 from .icon import UIIcon
+
 
 class FrameController(TopLevelController):
     tid = 'frame_controller'
@@ -44,7 +47,7 @@ class Frame(TopLevel, wx.Frame):
         
 
     def on_close(self, event):
-        print ('\n\nFrame on_close')
+        logging.debug("Frame on_close")            
 #        event.Skip()
 #        self._call_self_remove()
         self._auto_removal()

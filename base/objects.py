@@ -28,7 +28,7 @@ class UIBaseObject(GenericObject, metaclass=GenericWxMeta):
 
     # TODO: rever isso
     def _auto_removal(self):
-        print ('_auto_removal:', self.uid)
+        logging.debug('UIBaseObject._auto_removal: ' + str(self.uid)) 
         try:
             if isinstance(self, UIControllerObject):
                 uid = self.uid
@@ -39,7 +39,7 @@ class UIBaseObject(GenericObject, metaclass=GenericWxMeta):
             wx.CallAfter(UIM.remove, uid)
             print ('wx.CallAfter(UIM.remove, {})'.format(uid))
         except Exception as e:
-            print ('ERROR: _auto_removal ', e)
+            logging.error('ERROR: _auto_removal: ', str(e))
             raise
 
 
