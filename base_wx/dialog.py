@@ -1,10 +1,10 @@
+
 from collections import OrderedDict
 
 import wx
 from pubsub import pub
 
 from ..base.manager import UIManager
-
 from .toplevel import  TopLevelController, TopLevel
 from .icon import UIIcon
 
