@@ -716,6 +716,7 @@ class CanvasPlotter(CanvasBaseView):
     tid = 'canvas_plotter'
 
     def __init__(self, controller_uid):
+        #self.share_x = True
         super().__init__(controller_uid)
 
     def PostInit(self):

@@ -256,14 +256,14 @@ class UIManager(GenericManager):
 #        print ('\nUIManager PreExit')
         for obj in self.list():
             self._prepare_object_for_deletion(obj)
-
             try:
                 obj.view.unsubAll() 
                 obj.view.PreDelete() 
             except AttributeError:
                 pass
             except Exception as e:
-                print ('\n\nERROR with object {}: {} \n\n'.format(obj.uid, e))
+                msg = 'UIManager.PreExit: Error with object {}: {} '.format(obj.uid, e)
+                logging.error(msg)
                 raise      
 
             

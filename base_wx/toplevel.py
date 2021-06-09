@@ -127,7 +127,7 @@ class EncapsulatedControl(object):
         try:
             if options:
                 self.set_options(options)
-        except Exception as e:
+        except:
             raise
         if initial is not None:
             self.set_value(initial)
@@ -219,11 +219,12 @@ class EncapsulatedChoice(EncapsulatedControl):
             self.on_change(None)    
         
     def get_value(self):
-        if not self._map:
-            return None
         if self.control.GetSelection() == -1:
             return None
-        return self._map[self.control.GetString(self.control.GetSelection())]    
+        try:
+            return self._map[self.control.GetString(self.control.GetSelection())]    
+        except:
+            return None
     
     def show(self):
         return self.control.Show()

@@ -1,3 +1,5 @@
+
+import logging
 from collections import OrderedDict, Sequence
 
 import wx
@@ -534,6 +536,9 @@ class PropertyGridController(UIControllerObject):
         
     def on_change_obj_uid(self, new_value, old_value):
         #print('\n\non_change_obj_uid:', new_value, old_value)
+        
+        logging.debug('on_change_obj_uid: {} - {}'.format(new_value, old_value)) 
+        
         if old_value is not None:
             self.remove_properties(old_value)
         obj = self._get_object() 
@@ -546,14 +551,14 @@ class PropertyGridController(UIControllerObject):
             categories = obj._get_pg_categories()
             self._create_pg_categories(categories)
         except NotImplementedError :
-            print('NotImplementedError: obj._get_pg_categories()')
+            print('\n\nNotImplementedError: obj._get_pg_categories()')
             print(obj, obj.uid)
             categories = None     
         #
         try:
             properties = obj._get_pg_properties()
         except NotImplementedError :
-            print('NotImplementedError: obj._get_pg_properties()')
+            print('\n\nNotImplementedError: obj._get_pg_properties()')
             print(obj, obj.uid)
             properties = obj._ATTRIBUTES
             #for key, key_props in od.items():
@@ -567,8 +572,11 @@ class PropertyGridController(UIControllerObject):
             try:
                 property_ = _get_pg_property(obj.uid, key, key_props)
                 
+                
+                logging.debug('property_: {} - {}'.format(key, key_props))
+                
                 if property_ is None:
-                    print('property_ is None:', key, key_props)
+                    logging.debug('property_: {} - {}'.format(key, key_props))
                 
                 if key_props.get('category'):
                     category = self.view.GetProperty(key_props['category'])

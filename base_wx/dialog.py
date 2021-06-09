@@ -25,6 +25,7 @@ class DialogController(TopLevelController):
     
     def __init__(self, **state):
         super().__init__(**state)
+        self.icon = 'signal_32_32.bmp'
 
     def PreDelete(self):
         pub.unsubAll(topicFilter=self._topic_filter)
@@ -51,7 +52,7 @@ class Dialog(TopLevel, wx.Dialog):
         ) 
         self._objects = {}
         if controller.icon:   
-            self.icon = GripyIcon(controller.icon, wx.BITMAP_TYPE_ICO)        
+            self.icon = UIIcon(controller.icon, wx.BITMAP_TYPE_ICO)        
             self.SetIcon(self.icon)     
         if controller.maximized:
             self.Maximize()   

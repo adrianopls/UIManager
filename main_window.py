@@ -32,12 +32,12 @@ class MainWindow(Frame):
         #
         self.main_area_panel = wx.Panel(self)
         #
-        # bmp_filename = "gripy_logo.jpg"
-        # bmp = GripyBitmap(bmp_filename)
-        # self._static_bmp = wx.StaticBitmap(self.main_area_panel, wx.ID_ANY, 
-        #                             bmp, wx.Point(0, 0), 
-        #                             bmp.GetSize()
-        # )  
+        bmp_filename = "signal300px.bmp"
+        bmp = UIBitmap(bmp_filename)
+        self._static_bmp = wx.StaticBitmap(self.main_area_panel, wx.ID_ANY, 
+                                    bmp, wx.Point(0, 0), 
+                                    bmp.GetSize()
+        )  
         self.main_area_panel.SetBackgroundColour('white')
         #
         self._mgr.AddPane(self.main_area_panel, 
@@ -47,7 +47,7 @@ class MainWindow(Frame):
         #
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self._notebook, 1, flag=wx.EXPAND)
-#        sizer.Add(self._static_bmp, 1, flag=wx.EXPAND)
+        sizer.Add(self._static_bmp, 1, flag=wx.EXPAND)
         #
         self._notebook.Show(False)
         #
@@ -120,7 +120,7 @@ class MainWindow(Frame):
 #       TODO: Coloar exibir mensagem de saida aqui...       
 #        if event.CanVeto():
 #            print ('') 
-       # wx.GetApp().PreExit()
+        wx.GetApp().PreExit()
         wx.CallAfter(self.Destroy)
 
 
@@ -191,10 +191,12 @@ class MainWindow(Frame):
     
 
     def get_notebook_page_index(self, idx):
+#        return 0
         return self._notebook.GetPageIndex(idx)
 
 
     def get_notebook_page_count(self):
+#        return 0
         return self._notebook.GetPageCount()
     
 

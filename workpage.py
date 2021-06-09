@@ -36,6 +36,10 @@ class WorkPage(UIViewObject, wx.Panel):
     def __init__(self, controller_uid):
         """
         """
+        
+        logging.debug("WorkPage.__init__")
+        
+        
         #
         # Basic WorkPage interface structure
         # ==================================
@@ -50,9 +54,18 @@ class WorkPage(UIViewObject, wx.Panel):
         parent_controller = UIM.get(parent_uid)
         parent_view = parent_controller.view.main_area_panel
         wx.Panel.__init__(self, parent_view)
+        
+        
+        logging.debug("WorkPage.__init__ MID")
+        
+        
+        
         if controller.pos == -1:
             controller.pos = parent_controller.view.get_notebook_page_count()      
         # 
+        
+        logging.debug("WorkPage.__init__ MID 002")
+        
         result = parent_controller.insert_notebook_page(controller.pos, 
                                         self, controller.title, True
         )

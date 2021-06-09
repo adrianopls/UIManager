@@ -234,19 +234,19 @@ class CanvasBaseController(UIControllerObject):
         # Grid locator        
         'xgrid_major_locator': {
                 'default_value': 5, 
-                'type': int
+                'type': float
         },                
         'xgrid_minor_locator': {
                 'default_value': 20, 
-                'type': int
+                'type': float
         },    
         'ygrid_major_locator': {
                 'default_value': 5, 
-                'type': int
+                'type': float
         },                
         'ygrid_minor_locator': {
                 'default_value': 20, 
-                'type': int
+                'type': float
         },
 
 
@@ -970,7 +970,7 @@ class CanvasBaseController(UIControllerObject):
 
  
     def on_change_lim(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
-#        print ('\nCanvasBaseController.on_change_lim:', old_value, new_value, topic.getName())
+        print ('\nCanvasBaseController.on_change_lim:', old_value, new_value, topic.getName())
         key = topic.getName().split('.')[2]
         axis = key[0] # x or y  
         try:
@@ -1007,6 +1007,7 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
         UIViewObject.__init__(self, controller_uid)
         #
         self.figure = Figure()
+        self.share_x = False
         #
         # Get wx parent from parent UIView object
         UIM = UIManager()
@@ -1025,8 +1026,6 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
         #
         self._postpone_draw = False
         #
-        share_x = False
-        #
         self.base_axes = Axes(self.figure, controller.rect,
                                   facecolor=None,
                                   frameon=True,
@@ -1041,7 +1040,7 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
         self.figure.add_axes(self.base_axes)
         self.base_axes.set_zorder(0)        
         #
-        if share_x:
+        if self.share_x:
             self.plot_axes = Axes(self.figure, 
                              rect=self.base_axes.get_position(True), 
                              sharey=self.base_axes, 
@@ -1056,6 +1055,8 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
             )
             self.plot_axes.set_xlim(controller.xlim)
 
+        
+        
               
         #
         """
