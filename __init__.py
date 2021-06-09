@@ -1,4 +1,6 @@
 
+MAIN_ICON = "signal_32_32.bmp"
+
 from ..gm.metaclasses import GenericMeta
 from ..gm.generic_object import GenericObject
 from ..gm.generic_manager import GenericManager
