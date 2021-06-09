@@ -117,7 +117,7 @@ class EncapsulatedControl(object):
         try:
             if options:
                 self.set_options(options)
-        except Exception as e:
+        except:
             raise
         if initial is not None:
             self.set_value(initial)

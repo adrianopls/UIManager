@@ -51,6 +51,9 @@ from .workpage import WorkPageController, WorkPage
 #from .frame_nav import NavigatorController, Navigator
 from .cross_plotter import CrossPlotController, CrossPlot
 #
+from .plotter_model import ModelPlotController, ModelPlot
+from .plotter_wavelet import WaveletPlotController, WaveletPlot
+from .plotter_simulation import SimulationPlotController, SimulationPlot
 #from . import interface
 #
 #from . import ImportSelector
@@ -60,10 +63,7 @@ from .cross_plotter import CrossPlotController, CrossPlot
 #
 
 from .extras import SelectablePanelMixin
-#from .dialog_obj_props import ObjectPropertiesDialogController, \
-#                                                    ObjectPropertiesDialog
 
-from .coding_console import ConsoleController, Console
 #
 #from .repr_line import \
 #    LineRepresentationController, LineRepresentationView

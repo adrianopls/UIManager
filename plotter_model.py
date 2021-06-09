@@ -18,25 +18,23 @@ CP_FLOAT_PANEL = wx.NewId()
 
 
 
-class CrossPlotController(WorkPageController):
-    tid = 'crossplot_controller'
+class ModelPlotController(WorkPageController):
+    tid = 'modelplot_controller'
     
     def __init__(self, **state):
         super().__init__(**state)
 
 
     
-class CrossPlot(WorkPage):
-    tid = 'crossplot'
+class ModelPlot(WorkPage):
+    tid = 'modelplot'
     _TID_FRIENDLY_NAME = '2D Model'
 
     def __init__(self, controller_uid):   
-        logging.debug("CrossPlot.__init__")
         super().__init__(controller_uid) 
-        logging.debug("CrossPlot.__init__ ENDED")
  
     def PostInit(self):
-        logging.debug("CrossPlot.PostInit")
+        logging.debug("ModelPlot.PostInit")
         try:
             self.sizer = wx.BoxSizer(wx.VERTICAL)
             self._tool_bar =  wx.aui.AuiToolBar(self)
@@ -44,7 +42,20 @@ class CrossPlot(WorkPage):
             #     
             UIM = UIManager()   
             canvas_controller = UIM.create('canvas_plotter_controller',
-                                            self._controller_uid
+                                            self._controller_uid,
+                                            figure_facecolor = "#FFFFFF",
+                                            figure_titlesize = 10,
+                                            xtick_labelbottom = True,
+                                            ytick_labelleft = True,
+                                            xgrid_major_locator = 50.0,
+                                            ygrid_major_locator = 50.0,
+                                            xtick_bottom = True,
+                                            xtick_minor_visible = False,
+                                            ytick_left = True,
+                                            ytick_minor_left = False, 
+                                            xtick_minor_bottom = False,
+                                            xaxis_labeltext = "Grid points in X axis",
+                                            yaxis_labeltext = "Grid points in Y axis"
             )
             #
                      

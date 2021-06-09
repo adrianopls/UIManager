@@ -25,6 +25,7 @@ class DialogController(TopLevelController):
     
     def __init__(self, **state):
         super().__init__(**state)
+        self.icon = 'signal_32_32.bmp'
 
     def PreDelete(self):
         pub.unsubAll(topicFilter=self._topic_filter)
