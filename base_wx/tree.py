@@ -62,12 +62,11 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         )
         #
         self._rootid = self.AddRoot(controller._DEFAULT_ROOT_NAME)                  
-
+    
     
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self._on_activate)  
         self.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self._on_rightclick)    
         
-
 
         parent_controller.view._mgr.AddPane(self, 
                 wx.aui.AuiPaneInfo().Name("tree").
@@ -76,6 +75,7 @@ class TreeView(UIViewObject, wx.TreeCtrl):
                 CloseButton(False).MaximizeButton(True)
         )        
         parent_controller.view._mgr.Update()
+        
 
 
     def _on_activate(self, event):
@@ -516,3 +516,50 @@ class TreeView(UIViewObject, wx.TreeCtrl):
             del wait
             del disableAll
             UIM.remove(dlg.uid)   
+
+
+
+        # sga = SGAnimation(simulation.uid, cc.uid)
+        
+        # fig = cc._main_panel.plot_axes.get_figure()
+        
+        # animation = FuncAnimation(fig, sga, frames=simulation.nt, 
+        #                           init_func=sga.init_func, 
+        #                           interval=100, 
+        #                           repeat=True, blit=False
+        # )
+        
+        
+        #cc._main_panel.plot_axes
+        
+        
+        # xlim_max, ylim_max = model.simulation.shape
+        # # (left, right, bottom, top)
+        # extent = (0, xlim_max, ylim_max, 0)
+        
+        # print("\n\n")
+        # print(extent)
+        # print("\n\n")
+        
+        
+        # image = cc._main_panel.append_artist("AxesImage", 
+        #                                       cmap="Greys",
+        #                                       extent=extent)
+
+        # image.set_data(model.data)
+      
+        
+        # cpc = UIM.list('canvas_plotter_controller', cc.uid)[0]
+        # cpc.figure_titletext = model.name 
+        
+        # xlim = (0, xlim_max)
+        # cpc.xlim = xlim
+        # cpc.set_plot_lim("x", xlim)
+        # ylim = (ylim_max, 0)
+        # cpc.ylim = ylim
+        # cpc.set_plot_lim("y", ylim)
+        
+        # print(xlim_max, ylim_max)
+
+        #image.set_label('crossplot_controller')            
+        
