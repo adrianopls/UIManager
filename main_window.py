@@ -87,7 +87,7 @@ class MainWindow(Frame):
     def show_main_area_panel(self, b=True):
         sizer = self.main_area_panel.GetSizer()
         sizer.Show(self._notebook, show=not b)
-#        sizer.Show(self._static_bmp, show=b)
+        sizer.Show(self._static_bmp, show=b)
         sizer.Layout()
 
         #

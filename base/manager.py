@@ -342,9 +342,11 @@ class UIManager(GenericManager):
             
             
             if new_parent_uid[0] not in self._parenttidmap.get(uid[0], None):
-                raise Exception('New parent tid={} not registered as {} parent.'.format(new_parent_uid.tid,
-                                obj.__class__.__name__)
-            )
+                msg = "New parent tid={} not registered as {} parent.".format(
+                    new_parent_uid[0], obj.__class__.__name__)
+                logging.debug(msg)
+                raise Exception(msg)
+         
             #
             
             logging.debug(222)
