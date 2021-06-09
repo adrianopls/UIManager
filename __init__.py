@@ -1,4 +1,6 @@
 
+MAIN_ICON = "add.ico"
+
 from ..gm.metaclasses import GenericMeta
 from ..gm.generic_object import GenericObject
 from ..gm.generic_manager import GenericManager
@@ -60,7 +62,8 @@ from .cross_plotter import CrossPlotController, CrossPlot
 from .extras import SelectablePanelMixin
 #from .dialog_obj_props import ObjectPropertiesDialogController, \
 #                                                    ObjectPropertiesDialog
-#from .coding_console import ConsoleController, Console
+
+from .coding_console import ConsoleController, Console
 #
 #from .repr_line import \
 #    LineRepresentationController, LineRepresentationView
@@ -85,5 +88,7 @@ from .canvas_base import CanvasBaseController, CanvasBaseView
 from .canvas_plotter import CanvasPlotterController, CanvasPlotter                
 from .canvas_track import TrackCanvasController, TrackCanvas   
 from .track_label import TrackLabelController, TrackLabel
+
+
 
 

@@ -3,20 +3,10 @@ from collections import OrderedDict
 import wx
 from pubsub import pub
 
+from .. import MAIN_ICON
 from ..base.manager import UIManager
 from ..base.objects import UIControllerObject 
 from ..base.objects import UIViewObject 
-#from app.pubsub import AUTO_TOPIC
-#from app.app_utils import GripyIcon
-
-
-
-
-
-
-
-
-
 
 
 """
@@ -133,7 +123,6 @@ class EncapsulatedControl(object):
             self.set_value(initial)
         self.old_value = None
 
-
     def get_topic(self):
         UIM = UIManager()
         dialog = UIM.get(self._controller_uid)
@@ -206,7 +195,6 @@ class EncapsulatedChoice(EncapsulatedControl):
                 self._map = OrderedDict(self._map)
             self.control.AppendItems(list(self._map.keys()))                       
  
-        
     def set_value(self, value, event=False):
         if value is None:
             return
@@ -219,11 +207,12 @@ class EncapsulatedChoice(EncapsulatedControl):
             self.on_change(None)    
         
     def get_value(self):
-        if not self._map:
-            return None
         if self.control.GetSelection() == -1:
             return None
-        return self._map[self.control.GetString(self.control.GetSelection())]    
+        try:
+            return self._map[self.control.GetString(self.control.GetSelection())]    
+        except:
+            return None
     
     def show(self):
         return self.control.Show()
@@ -487,10 +476,9 @@ class TopLevelController(UIControllerObject):
     _ATTRIBUTES['title'] = {
             'default_value': wx.EmptyString, 
             'type': str
-    }
-    # TODO: Use icon from App parameters          
+    }     
     _ATTRIBUTES['icon'] = {
-            'default_value': '',
+            'default_value': MAIN_ICON,
             'type': str
     }
     _ATTRIBUTES['style'] = {
@@ -527,9 +515,6 @@ class TopLevel(UIViewObject):
         controller.subscribe(self._set_position, 'change.pos')
         controller.subscribe(self._set_title, 'change.title')
         #
-        # TODO: try to remove _flag using new GripyObject style
-        # little hack - on_size
-#        self._flag = False
         
     def on_maximize(self, event):
         UIM = UIManager()

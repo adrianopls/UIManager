@@ -87,7 +87,7 @@ class MainWindow(Frame):
     def show_main_area_panel(self, b=True):
         sizer = self.main_area_panel.GetSizer()
         sizer.Show(self._notebook, show=not b)
-        sizer.Show(self._static_bmp, show=b)
+#        sizer.Show(self._static_bmp, show=b)
         sizer.Layout()
 
         #
@@ -120,7 +120,7 @@ class MainWindow(Frame):
 #       TODO: Coloar exibir mensagem de saida aqui...       
 #        if event.CanVeto():
 #            print ('') 
-       # wx.GetApp().PreExit()
+        wx.GetApp().PreExit()
         wx.CallAfter(self.Destroy)
 
 

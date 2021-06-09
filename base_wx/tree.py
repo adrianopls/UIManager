@@ -25,30 +25,21 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         parent_controller =  UIM.get(parent_controller_uid)  
         #
         wx.TreeCtrl.__init__(self, parent_controller.view, -1, 
-                             wx.Point(0, 0), wx.Size(200, 250),
+                             wx.Point(0, 0), wx.Size(250, 300),
                              wx.TR_DEFAULT_STYLE | wx.NO_BORDER
         )
         #
         self._rootid = self.AddRoot(controller._DEFAULT_ROOT_NAME)                  
-    
-        #self.SetItemData(self._rootid, (controller._PSEUDOROOTUID, None))
-            
-        '''
-        imglist = wx.ImageList(16, 16, True, 2)
-        imglist.Add(wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, wx.Size(16,16)))
-        tree.AssignImageList(imglist)
-        items.append(tree.AppendItem(root, "Item 1", 0))
-        '''
+        #
+        parent_controller.view._mgr.AddPane(self, 
+                wx.aui.AuiPaneInfo().Name("tree").
+                Caption("").Left().Layer(1).Position(1).
+                PinButton(True).MinimizeButton(True).
+                CloseButton(False).MaximizeButton(True)
+        )        
+        parent_controller.view._mgr.Update()
+        #
         
-        # parent_controller.view._mgr.AddPane(self, 
-        #         wx.aui.AuiPaneInfo().Name("tree").
-        #         Caption("").Left().Layer(1).Position(1).
-        #         PinButton(True).MinimizeButton(True).
-        #         CloseButton(False).MaximizeButton(True)
-        # )        
-        # parent_controller.view._mgr.Update()
-        
-
-
-
+    def reload_tree(self, *args):  
+        raise NotImplementedError('Must be implemented by subclass.')
 

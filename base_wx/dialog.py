@@ -1,10 +1,10 @@
+
 from collections import OrderedDict
 
 import wx
 from pubsub import pub
 
 from ..base.manager import UIManager
-
 from .toplevel import  TopLevelController, TopLevel
 from .icon import UIIcon
 
@@ -51,7 +51,7 @@ class Dialog(TopLevel, wx.Dialog):
         ) 
         self._objects = {}
         if controller.icon:   
-            self.icon = GripyIcon(controller.icon, wx.BITMAP_TYPE_ICO)        
+            self.icon = UIIcon(controller.icon, wx.BITMAP_TYPE_ICO)        
             self.SetIcon(self.icon)     
         if controller.maximized:
             self.Maximize()   

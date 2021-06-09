@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu May 13 13:28:11 2021
 
-@author: Adriano
-"""
+import os
 
 import wx
+
+import app
+
 
 class UIBitmap(wx.Bitmap):
     

@@ -65,15 +65,21 @@ class WorkPage(UIViewObject, wx.Panel):
         controller.subscribe(self._set_float_mode, 'change.float_mode')
         # Set notebook page name   
         self._set_own_name()
+        #
+        #self.SetBackgroundColour('green')
 
 
     def PreDelete(self):
         UIM = UIManager()
         controller = UIM.get(self._controller_uid)        
-        if controller.float_mode:
-            raise Exception('TRATAR DELETE ON FLOAT MODE')
-#        mwc = interface.get_main_window_controller()
-#        mwc.remove_notebook_page(self)
+#        if controller.float_mode:
+#            raise Exception('TRATAR DELETE ON FLOAT MODE')
+        mwc = wx.App.Get().get_main_window_controller()
+        mwc.remove_notebook_page(self)
+
+
+    def get_friendly_name(self):
+        return ""
         
         
     def _set_own_name(self):
@@ -96,8 +102,11 @@ class WorkPage(UIViewObject, wx.Panel):
         for wpc in wpcs:
             if wpc == controller:
                 break
-            if wpc.obj_uid == controller.obj_uid:
-                idx += 1
+            try:
+                if wpc.obj_uid == controller.obj_uid:
+                    idx += 1
+            except:
+                pass
         idx += 1      
         return idx
 
@@ -136,6 +145,7 @@ class WorkPage(UIViewObject, wx.Panel):
         UIM = UIManager()
         controller = UIM.get(self._controller_uid)
         parent_uid = UIM._getparentuid(controller.uid)
+        
         if new_value:
             controller.unsubscribe(self._set_title, 'change.title')            
             controller.unsubscribe(self._set_pos, 'change.pos')
@@ -144,6 +154,7 @@ class WorkPage(UIViewObject, wx.Panel):
             )
             UIM.reparent(self._controller_uid, fc.uid)
             fc.view.Show()
+        
         else:
             mwc_uid = UIM._getparentuid(parent_uid)
             mwc = UIM.get(mwc_uid)
@@ -154,16 +165,24 @@ class WorkPage(UIViewObject, wx.Panel):
 
 
     def reparent(self, old_parent_uid, new_parent_uid):
+        logging.debug("Workpage.reparent")
         UIM = UIManager()
         old_parent_controller = UIM.get(old_parent_uid)
         new_parent_controller = UIM.get(new_parent_uid)
 
         if old_parent_controller.tid == 'main_window_controller':
             try:
-                ret_val = old_parent_controller.remove_notebook_page(self)     
-                self.Reparent(new_parent_controller.view)
+                logging.debug("Workpage.reparent 2")
+                ret_val = old_parent_controller.remove_notebook_page(self)  
+                logging.debug("Workpage.reparent 3: {}".format(ret_val))   
+                if ret_val:
+                    
+                    ret_val = self.Reparent(new_parent_controller.view)
+                    self.Show()
+                    logging.debug("Workpage.reparent 4: {}".format(ret_val))
+                self.Refresh()    
             except Exception as e:
-                print ('ERROR:', e)
+                logging.exception("Workpage.reparent errouuuu")
         else:
             # Then old_parent_controller is a Frame
             self.Reparent(new_parent_controller.view)
@@ -171,7 +190,8 @@ class WorkPage(UIViewObject, wx.Panel):
             ret_val = new_parent_controller.insert_notebook_page(
                     controller.pos, self, 
                     controller.title, True
-            )     
+            )    
+        logging.debug("Workpage.reparent fim: {}".format(ret_val))    
         return ret_val          
         
         

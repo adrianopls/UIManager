@@ -5,8 +5,10 @@ from collections import OrderedDict
 
 import wx
 
-import app
-from classes.gm.generic_manager import GenericManager
+
+
+from ...gm.generic_manager import GenericManager
+#from classes.gm.generic_manager import GenericManager
 from .objects import UIControllerObject
 
 
@@ -21,6 +23,10 @@ class UIManager(GenericManager):
     _wx_ID = 2000  # for a shortcut do wx.NewId. See self.new_wx_id  
 #    _PUB_NAME = 'UIManager'
     #_VALID_PUBSUB_TOPICS = ['uim', 'uim.object_removed']
+
+    # TODO: Verificar se o icone fica aqui ou se fica no App.__init__ 
+    #APP_ICON = "add.ico"
+
 
 
     def __init__(self):   
@@ -112,9 +118,9 @@ class UIManager(GenericManager):
         
     def get(self, uid):
         if isinstance(uid, str):
-            uid = app.app_utils.parse_string_to_uid(uid)
+            uid = GenericManager.parse_string_to_uid(uid)
         return self._data.get(uid)
-        #return self._data[uid]
+
     
 
     # Something like a mix between new and add in ObjectManager
@@ -324,28 +330,36 @@ class UIManager(GenericManager):
 
 
     def reparent(self, uid, new_parent_uid):
-        print ('UIM.reparent:', uid, new_parent_uid)
-        if uid not in self._data:
-            raise Exception('uid={} is not a UIManager object.'.format(uid))
-        if new_parent_uid not in self._data:
-            raise Exception('New parent uid={} is not a UIManager object.'.format(new_parent_uid))   
-        obj = self._data[uid]
-        
-        if new_parent_uid[0] not in self._parenttidmap.get(uid[0], None):
-            raise Exception('New parent tid={} not registered as {} parent.'.format(new_parent_uid.tid,
-                            obj.__class__.__name__)
-        )
-         
-        #
-        old_parent_uid = self._parentuidmap[uid]
-        self._parentuidmap[uid] = new_parent_uid
-        #
-        self._childrenuidmap[old_parent_uid].remove(uid)
-        self._childrenuidmap[new_parent_uid].append(uid)
-        # Make obj.view do the wx reparent
-        obj.view.reparent(old_parent_uid, new_parent_uid)
-
-
+        logging.debug('UIM.reparent:')
+        try:
+            if uid not in self._data:
+                raise Exception('uid={} is not a UIManager object.'.format(uid))
+            if new_parent_uid not in self._data:
+                raise Exception('New parent uid={} is not a UIManager object.'.format(new_parent_uid))   
+            obj = self._data[uid]
+            
+            logging.debug(111)
+            
+            
+            if new_parent_uid[0] not in self._parenttidmap.get(uid[0], None):
+                raise Exception('New parent tid={} not registered as {} parent.'.format(new_parent_uid.tid,
+                                obj.__class__.__name__)
+            )
+            #
+            
+            logging.debug(222)
+            #
+            old_parent_uid = self._parentuidmap[uid]
+            self._parentuidmap[uid] = new_parent_uid
+            #
+            self._childrenuidmap[old_parent_uid].remove(uid)
+            self._childrenuidmap[new_parent_uid].append(uid)
+            # Make obj.view do the wx reparent
+            logging.debug(333)
+            obj.view.reparent(old_parent_uid, new_parent_uid)
+        except:
+            logging.exception("UIM.reparent errouuuu")
+            
 
 
 
