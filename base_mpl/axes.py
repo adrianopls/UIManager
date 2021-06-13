@@ -1,4 +1,10 @@
-# -*- coding: utf-8 -*-
+
+"""
+Created on Wed Jun  9 19:36:29 2021
+
+@author: Adriano
+"""
+
 
 import numpy as np
 import wx
@@ -33,29 +39,189 @@ CANVAS_SCALES = ["linear", "log", "symlog", "logit"]
 
 
 
-# From: matplotlib\backends\backend_wxagg.py
-"""
-    The FigureCanvas contains the figure and does event handling.
+class AxesController(UIControllerObject):
 
-    In the wxPython backend, it is derived from wxPanel, and (usually)
-    lives inside a frame instantiated by a FigureManagerWx. The parent
-    window probably implements a wxSizer to control the displayed
-    control size - but we give a hint as to our preferred minimum
-    size.
-    """
+    tid = "axes_controller"
 
 
+    _ATTRIBUTES = {
+            
+        # Top level properties    
+        'rect': {
+                'default_value': (0.1, 0.1, 0.8, 0.8), 
+                'type': (tuple, float, 4)  
+        },
+        'facecolor': {
+                'default_value': 'white', 
+                'type': str
+        },           
+        'frameon': {
+                'default_value': True, 
+                'type': bool
+        },           
+        'xscale': {
+                'default_value': 'linear', #["linear", "log", "symlog", "logit"]
+                'type': str
+        },
+        'yscale': {
+                'default_value': 'linear', 
+                'type': str
+        },
+        'xlim': {
+                'default_value': (0.0, 100.0), 
+                'type': (tuple, float, 2)  
+        },        
+        'ylim': {
+                'default_value': (0.0, 100.0), 
+                'type': (tuple, float, 2)
+        },
+        
+    }
 
-"""
-O CanvasBaseController eh a classe de base para todos objetos de Plotagem!!!
-"""
- 
+
+
+    def PostInit(self):
+        #
+        self.subscribe(self.on_change_rect, 'change.rect')
+        #        
+        self.subscribe(self.on_change_facecolor, 'change.facecolor')
+        self.subscribe(self.on_change_frameon, 'change.frameon')
+        #           
+        self.subscribe(self.on_change_lim, 'change.xlim')
+        self.subscribe(self.on_change_lim, 'change.ylim')
+        self.subscribe(self.on_change_scale, 'change.xscale')
+        self.subscribe(self.on_change_scale, 'change.yscale')        
+        ###
+
+
+
+
+
+class AxesView(UIViewObject, Axes):
+    
+    tid = "axes"
+
+
+    def __init__(self, controller_uid):
+        UIViewObject.__init__(self, controller_uid)
+        #       
+        UIM = UIManager()
+        parent_controller_uid = UIM._getparentuid(self._controller_uid)
+        parent_controller =  UIM.get(parent_controller_uid)
+        #        
+        Axes.__init__(parent_controller.view, controller.rect,
+                        facecolor=controller.facecolor,
+                        frameon=controller.frameon,
+                        sharex=None,  # use Axes instance's xaxis info
+                        sharey=None,  # use Axes instance's yaxis info
+                        label='',
+                        xscale=controller.xscale,
+                        yscale=controller.yscale,
+                        xlim=controller.xlim,
+                        ylim=controller.ylim
+        )
+        #
+
+
+
+    def on_change_rect(self, old_value, new_value):  
+        try:
+            self.view.set_position(new_value)
+        except:
+            self.view.set_position(old_value)
+
+
+    def on_change_facecolor(self, old_value, new_value):  
+        self.set_facecolor(new_value)
+
+
+    def on_change_frameon(self, old_value, new_value):   
+        self.set_frame_on(new_value)
+
+
+    def on_change_lim(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
+        #print ('\nCanvasBaseController.on_change_lim:', old_value, new_value, topic.getName())
+        key = topic.getName().split('.')[2]
+        axis = key[0] # x or y  
+        #
+        if axis == 'x':
+            self.set_xlim(new_value)
+        elif axis == 'y':
+            self.set_ylim(new_value)
+            
+            
+      
+    def on_change_scale(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
+#        print ('\nnCanvasBaseController.on_change_scale:', old_value, new_value, topic.getName())
+        key = topic.getName().split('.')[2]
+        if new_value not in CANVAS_SCALES:
+            self.set_value_from_event(key, old_value)
+            return
+        axis = key[0] # x or y       
+        #
+        if axis == 'x':
+            return self.set_xscale(new_value)
+        elif axis == 'y':
+            return self.set_yscale(new_value)
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+    def PostInit(self):
+        # Here, the model object was created and model.PostInit() was called.    
+        UIM = UIManager()
+        controller = UIM.get(self._controller_uid)
+        #
+        self._postpone_draw = False
+        #
+        self.base_axes = Axes(self.figure, controller.rect,
+                                  facecolor=None,
+                                  frameon=True,
+                                  sharex=None,  # use Axes instance's xaxis info
+                                  sharey=None,  # use Axes instance's yaxis info
+                                  label='',
+                                  xscale=controller.xscale,
+                                  yscale=controller.yscale,
+                                  xlim=controller.xlim,
+                                  ylim=controller.ylim
+        )
+        self.figure.add_axes(self.base_axes)
+        self.base_axes.set_zorder(0)        
+        #
+        if self.share_x:
+            self.plot_axes = Axes(self.figure, 
+                             rect=self.base_axes.get_position(True), 
+                             sharey=self.base_axes, 
+                             sharex=self.base_axes, 
+                             frameon=False
+            )
+        else:    
+            self.plot_axes = Axes(self.figure, 
+                             rect=self.base_axes.get_position(True), 
+                             sharey=self.base_axes, 
+                             frameon=False
+            )
+            self.plot_axes.set_xlim(controller.xlim)
+
+        
+
+
+
 
 class CanvasBaseController(UIControllerObject):
     tid = None
 
     _ATTRIBUTES = {
-            
         # Top level properties    
         'rect': {
                 #'default_value': (0.05, 0.05, 0.9, 0.9),
@@ -79,7 +245,9 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': (0.0, 100.0), 
                 'type': (tuple, float, 2)
         },
-
+        
+        
+        
         ##
         'xaxis_labeltext': {
                 'default_value': '', #'X Axis label', 
@@ -89,13 +257,11 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': '', #'Y Axis label', 
                 'type': str                
         },       
-                
         # Figure properties
         'figure_facecolor': {
                 'default_value': '#e8f3ff', #'LightSkyBlue', #'lightyellow',
                 'type': str
         },
-
         'figure_titletext': {
                 'default_value': '', #'Figure Title', #wx.EmptyString, 
                 'type': str
@@ -123,17 +289,16 @@ class CanvasBaseController(UIControllerObject):
         'figure_titleva': {
                 'default_value': 'center', 
                 'type': str
-        },    
-          
+        },            
         # Axes properties
         'axes_facecolor': {
                 'default_value': 'white', 
                 'type': str
-        },
+        },   
         'axes_edgecolor': {
                 'default_value': 'black', 
                 'type': str
-        },
+        },        
         'axes_axisbelow': {
                 'default_value': 'line', # 'line', True, False
                 'type': str
@@ -141,9 +306,7 @@ class CanvasBaseController(UIControllerObject):
         'axes_linewidth': {
                 'default_value': 0.8, 
                 'type': float
-        },                
-                
-  
+        },                 
         'xgrid_major': {
                 'default_value': False, #True, 
                 'type': bool
@@ -159,9 +322,7 @@ class CanvasBaseController(UIControllerObject):
         'ygrid_minor': {
                 'default_value': True, 
                 'type': bool
-        },                 
-                
-                
+        },                      
         'xgrid_major_color': {
                 'default_value': 'DarkGray', #'#A9A9A9',
                 'type': str
@@ -178,7 +339,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 1.4, 
                 'type': float
         },
-
         'xgrid_minor_color': {
                 'default_value': 'DarkGray', #'#A9A9A9',
                 'type': str
@@ -195,7 +355,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 0.7, 
                 'type': float
         },
-
         'ygrid_major_color': {
                 'default_value': 'DarkGray', #'#A9A9A9',
                 'type': str
@@ -212,7 +371,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 1.4, 
                 'type': float
         },
-
         'ygrid_minor_color': {
                 'default_value': 'DarkGray', #'#A9A9A9',
                 'type': str
@@ -229,8 +387,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 0.7, 
                 'type': float
         },
-
-
         # Grid locator        
         'xgrid_major_locator': {
                 'default_value': 5, 
@@ -248,8 +404,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 20, 
                 'type': float
         },
-
-
         'axes_labelcolor': {
                 'default_value': 'Black', 
                 'type': str
@@ -266,8 +420,6 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 'normal',
                 'type': str
         },  
-
-
         'axes_titletextcenter': {
                 'default_value': '', #'Axes title (center)',
                 'type': str
@@ -296,10 +448,7 @@ class CanvasBaseController(UIControllerObject):
         'axes_titleweight': {        
                 'default_value': 'normal',
                 'type': str
-        },  
-         
-                
-                
+        },              
         # Spines visibility       
         'axes_spines_right': {
                 'default_value': True, 
@@ -316,8 +465,7 @@ class CanvasBaseController(UIControllerObject):
         'axes_spines_top': {
                 'default_value': True, 
                 'type': bool
-        },        
-                
+        },                     
         # Spines location        
         'axes_spines_right_position': {
                 'default_value': ('axes', 1.0), #   ('axes',0.5)      ['outward', 'axes', 'data']
@@ -334,10 +482,7 @@ class CanvasBaseController(UIControllerObject):
         'axes_spines_top_position': {
                 'default_value': ('axes', 1.0), 
                 'type': (tuple, str, 2)                 
-        },    
-
-     
-                
+        },                  
         'xaxis_visibility': {
                 'default_value': True, 
                 'type': bool
@@ -345,9 +490,7 @@ class CanvasBaseController(UIControllerObject):
         'yaxis_visibility': {
                 'default_value': True, 
                 'type': bool
-        },                 
-
-         
+        },                    
         # Tick label visibility   
         'xtick_labelbottom': {
                 'default_value': False, #True, 
@@ -364,8 +507,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_labelright': {
                 'default_value': False, 
                 'type': bool
-        },                 
-                
+        },                           
         # Tick visibility (detailed)   
         'xtick_major_bottom': {
                 'default_value': True, 
@@ -398,9 +540,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_minor_right': {
                 'default_value': True, 
                 'type': bool
-        },  
-         
-                
+        },          
         # Tick visibility   
         'xtick_minor_visible': {
                 'default_value': True, 
@@ -409,9 +549,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_minor_visible': {
                 'default_value': True, 
                 'type': bool
-        },                   
-            
-                
+        },                               
         # Tick visibility   
         'xtick_bottom': {
                 'default_value': False, 
@@ -428,20 +566,16 @@ class CanvasBaseController(UIControllerObject):
         'ytick_right': {
                 'default_value': False, 
                 'type': bool
-        },       
-                
-                
+        },                   
         # Tick direction        
         'xtick_direction': {
                 'default_value': 'out', 
                 'type': str
         },                
-  
         'ytick_direction': {
                 'default_value': 'out',
                 'type': str
-        },           
-                
+        },                         
         # Tick length   
         'xtick_major_size': {
                 'default_value': 3.5, #10.0, 
@@ -458,8 +592,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_minor_size': {
                 'default_value': 2.0, #5.0, 
                 'type': float
-        },     
-                
+        },                  
         # Tick width                 
         'xtick_major_width': {
                 'default_value': 0.8, #1.4, 
@@ -476,8 +609,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_minor_width': {
                 'default_value': 0.6, #5, 
                 'type': float
-        },    
-                
+        },                
         # Tick pad                 
         'xtick_major_pad': {
                 'default_value': 3.5, 
@@ -494,8 +626,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_minor_pad': {
                 'default_value': 3.4, 
                 'type': float
-        },
-                
+        },             
         # Tick label size       
         'xtick_labelsize': {
                 'default_value': '10.0', 
@@ -504,8 +635,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_labelsize': {
                 'default_value': '10.0',
                 'type': str
-        },
-                
+        },               
         # Tick color    
         'xtick_color': {
                 'default_value': 'Black', 
@@ -514,8 +644,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_color': {
                 'default_value': 'Black', 
                 'type': str
-        }, 
-                
+        },           
         # Tick label color     
         'xtick_labelcolor': {
                 'default_value': 'Black', 
@@ -524,8 +653,7 @@ class CanvasBaseController(UIControllerObject):
         'ytick_labelcolor': {
                 'default_value': 'Black', 
                 'type': str
-        },   
-                
+        },              
         # Tick label rotation   
         'xtick_labelrotation': {
                 'default_value': 0.0, 
@@ -535,10 +663,7 @@ class CanvasBaseController(UIControllerObject):
                 'default_value': 0.0,
                 'type': float
         }        
-        
-        
-        
-        
+                
     }  
 
     
@@ -547,8 +672,8 @@ class CanvasBaseController(UIControllerObject):
           
         
     def PostInit(self):
-        #        
-        # print('CanvasBaseController.PostInit')
+        
+#       print('CanvasBaseController.PostInit')
         #
         self.subscribe(self.on_change_figure_facecolor, 
                        'change.figure_facecolor')
@@ -584,6 +709,7 @@ class CanvasBaseController(UIControllerObject):
         self.subscribe(self.on_change_axes_properties, 'change.axes_axisbelow')
         self.subscribe(self.on_change_axes_properties, 'change.axes_linewidth')
         #
+        
         # Grid Visibility
         self.subscribe(self.on_change_grid_parameters, 'change.xgrid_major')
         self.subscribe(self.on_change_grid_parameters, 'change.xgrid_minor')
@@ -609,6 +735,7 @@ class CanvasBaseController(UIControllerObject):
         self.subscribe(self.on_change_grid_parameters, 'change.ygrid_minor_alpha')
         self.subscribe(self.on_change_grid_parameters, 'change.ygrid_minor_linestyle')
         self.subscribe(self.on_change_grid_parameters, 'change.ygrid_minor_linewidth')          
+
         #
         self.subscribe(self.on_change_text_properties, 'change.xaxis_labeltext')
         self.subscribe(self.on_change_text_properties, 'change.yaxis_labeltext')
@@ -691,14 +818,15 @@ class CanvasBaseController(UIControllerObject):
         self.subscribe(self.on_change_tick_params, 'change.xtick_labelrotation')
         self.subscribe(self.on_change_tick_params, 'change.ytick_labelrotation')
         ###
+        
         #
         self.subscribe(self.on_change_minor_tick_visibility, 
                                                'change.xtick_minor_visible')
         self.subscribe(self.on_change_minor_tick_visibility, 
                                                'change.ytick_minor_visible')
         #
-        # print('CanvasBaseController.PostInit fim')
-
+#        print('CanvasBaseController.PostInit fim')
+        
 
     def on_change_axes_properties(self, old_value, new_value, 
                                                       topic=publisher.AUTO_TOPIC):
@@ -738,9 +866,7 @@ class CanvasBaseController(UIControllerObject):
             self.view.set_grid_parameters(axis, which, **kw)
         self.view.draw()
         
-
-        
-        
+ 
     def load_style(self, style_name):
         self.view._postpone_draw = True   
         print ('\nReseting style...')
@@ -794,7 +920,6 @@ class CanvasBaseController(UIControllerObject):
                     print ('NOT LOADED: {} = {}'.format(new_key, value))
                     
 
-
     def on_change_figure_facecolor(self, old_value, new_value, 
                                                       topic=publisher.AUTO_TOPIC):
         try:
@@ -805,7 +930,6 @@ class CanvasBaseController(UIControllerObject):
         finally:
             self.view.draw()         
             
-
 
     def on_change_spine(self, old_value, new_value, topic=publisher.AUTO_TOPIC):   
         key = topic.getName().split('.')[2]
@@ -821,8 +945,7 @@ class CanvasBaseController(UIControllerObject):
         finally:
             self.view.draw()
         
-           
-            
+                      
     def on_change_axis_visibility(self, old_value, new_value, 
                                                       topic=publisher.AUTO_TOPIC):   
         key = topic.getName().split('.')[2]
@@ -836,7 +959,7 @@ class CanvasBaseController(UIControllerObject):
         
         
     def on_change_rect(self, old_value, new_value):  
-        print ('on_change_rect')
+        #print ('on_change_rect')
         try:
             self.view.set_position(new_value)
             self.view.draw()  
@@ -1483,6 +1606,7 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
         self.base_axes.spines['right'].set_edgecolor(color)
         self.base_axes.spines['bottom'].set_edgecolor(color)
         self.base_axes.spines['top'].set_edgecolor(color)
+        
         
     def set_axes_axisbelow(self, b):
         """

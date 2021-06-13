@@ -7,6 +7,10 @@ from . import CanvasBaseView
 
 
 
+# =============================================================================
+# Objeto usado como base para os Plotters, como o CrossPlot
+# 
+# =============================================================================
 
 class CanvasPlotterController(CanvasBaseController):
     tid = 'canvas_plotter_controller'
