@@ -1007,9 +1007,9 @@ class AxesView(UIViewObject, Axes):
                 raise Exception('Invalid which.')
             #            
             if axis == 'x':
-                ax = self.base_axes.xaxis
+                ax = self.xaxis
             else:
-                ax = self.base_axes.yaxis  
+                ax = self.yaxis  
             #    
             if which == 'major':
                 ax.set_major_locator(LocType(*args, **kwargs))
@@ -1115,24 +1115,24 @@ class AxesView(UIViewObject, Axes):
           
         if who == 'axes':
             if loc == 'left' or loc == 'all':
-                text_objs.append(self.base_axes._left_title)
+                text_objs.append(self._left_title)
             if loc == 'center' or loc == 'all':
-                text_objs.append(self.base_axes.title)    
+                text_objs.append(self.title)    
             if loc == 'right' or loc == 'all':
-                text_objs.append(self.base_axes._right_title)       
+                text_objs.append(self._right_title)       
   
         elif who == 'axis':
             if pad is not None:
                 if axis == 'x' or axis == 'both':
-                    self.base_axes.xaxis.labelpad = pad 
-                    self.base_axes.xaxis.stale = True
+                    self.xaxis.labelpad = pad 
+                    self.xaxis.stale = True
                 if axis == 'y' or axis == 'both':
-                    self.base_axes.yaxis.labelpad = pad
-                    self.base_axes.yaxis.stale = True 
+                    self.yaxis.labelpad = pad
+                    self.yaxis.stale = True 
             if axis == 'x' or axis == 'both':
-                 text_objs.append(self.base_axes.xaxis.label)
+                 text_objs.append(self.xaxis.label)
             if axis == 'y' or axis == 'both':     
-                 text_objs.append(self.base_axes.yaxis.label)
+                 text_objs.append(self.yaxis.label)
                  
       
         for text_obj in text_objs:
@@ -1323,12 +1323,6 @@ class CanvasBaseController(UIControllerObject):
         finally:
             self.view.draw()         
             
-
-
-
- 
-                                    
-
 
 
     def on_change_text_properties(self, old_value, new_value, topic=publisher.AUTO_TOPIC):
