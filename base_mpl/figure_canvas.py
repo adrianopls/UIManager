@@ -7,7 +7,7 @@ np.set_printoptions(suppress=True)
 import matplotlib
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
+from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
 
 from matplotlib.ticker import NullLocator
 from matplotlib.ticker import MultipleLocator
@@ -36,11 +36,23 @@ from . import UIViewObject
     window probably implements a wxSizer to control the displayed
     control size - but we give a hint as to our preferred minimum
     size.
-    """
+"""
+
 """
 O CanvasBaseController eh a classe de base para todos objetos de Plotagem!!!
 """
- 
+
+"""
+The FigureCanvas contains the figure and does event handling.
+
+In the wxPython backend, it is derived from wxPanel, and (usually)
+lives inside a frame instantiated by a FigureManagerWx. The parent
+window probably implements a wxSizer to control the displayed
+control size - but we give a hint as to our preferred minimum
+size.
+"""
+
+
 
 
 
@@ -62,7 +74,7 @@ class FigureCanvasController(UIControllerObject):
         
 
     
-class FigureCanvas(UIViewObject, FigureCanvas):  
+class FigureCanvas(UIViewObject, FigureCanvasWxAgg):  
     tid = None
 
     def __init__(self, controller_uid):
@@ -77,7 +89,7 @@ class FigureCanvas(UIViewObject, FigureCanvas):
         parent_controller = UIM.get(parent_uid)        
         wx_parent = parent_controller._get_wx_parent(self.tid)
         #
-        FigureCanvas.__init__(self, wx_parent, -1, self.figure)
+        FigureCanvasWxAgg.__init__(self, wx_parent, -1, self.figure)
 
 
 

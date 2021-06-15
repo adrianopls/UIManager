@@ -1,22 +1,24 @@
 
+from matplotlib.figure import Figure
+
 from . import UIManager
 from . import UIControllerObject 
 from . import UIViewObject 
 
-from matplotlib.figure import Figure
-
-
 
 class FigureController(UIControllerObject):
-    tid = None
+    tid = "figure_controller"
 
     _ATTRIBUTES = {
         # Figure properties
-        'figure_facecolor': {
+        'facecolor': {
                 'default_value': '#e8f3ff', #'LightSkyBlue', #'lightyellow',
                 'type': str
         },
-
+        'edgecolor': {
+                'default_value': 'LightSkyBlue', #'lightyellow',
+                'type': str
+        },
         'figure_titletext': {
                 'default_value': '', #'Figure Title', #wx.EmptyString, 
                 'type': str
@@ -48,26 +50,23 @@ class FigureController(UIControllerObject):
     }
     
 
-class FigureView(UIViewObject, Figure):  
-    tid = None
+class Figure(UIViewObject, Figure):  
+    tid = "figure"
 
     def __init__(self, controller_uid):
         UIViewObject.__init__(self, controller_uid)
+        UIM = UIManager()
+        controller = UIM.get(self._controller_uid)
+        
         Figure.__init__(
                  figsize=None,
                  dpi=None,
-                 facecolor=None,
-                 edgecolor=None,
+                 facecolor=controller.facecolor,
+                 edgecolor=controller.edgecolor,
                  linewidth=0.0,
                  frameon=None,
                  subplotpars=None,  # rc figure.subplot.*
                  tight_layout=None,  # rc figure.autolayout
                  constrained_layout=None,  # rc figure.constrained_layout.use
         )
-        #
-        # Get wx parent from parent UIView object
-        # UIM = UIManager()
-        # parent_uid = UIM._getparentuid(self._controller_uid)
-        # parent_controller = UIM.get(parent_uid)        
-        # wx_parent = parent_controller._get_wx_parent(self.tid)
-        #
+
