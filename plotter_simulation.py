@@ -60,12 +60,24 @@ class SimulationPlot(WorkPage):
                                             axes_labelsize = 10
             )
             #
-                     
+            
+            
             self._main_panel = canvas_controller.view
+            
+            self.main_panel_base = wx.Panel(self)
+            self.main_panel_base_sizer = wx.BoxSizer(wx.HORIZONTAL)
+            self.main_panel_base_sizer.Add(self._main_panel, 1, flag=wx.EXPAND)
+            
+            self.axes_panel_base = wx.Panel(self)
+            self.axes_panel_base.SetBackgroundColour('blue')
+            self.main_panel_base_sizer.Add(self.axes_panel_base, 1, flag=wx.EXPAND)
+            
+            
+            
             # TODO: Keep this conection? (must be disconected at PreDelete??)
 #            self._main_panel.mpl_connect('motion_notify_event', 
 #                                                     self.on_canvas_mouse_move)
-            self.sizer.Add(self._main_panel, 1, flag=wx.EXPAND)
+            self.sizer.Add(self._main_panel_base, 1, flag=wx.EXPAND)
             #
             self._status_bar =  PlotStatusBar(self)
             self.sizer.Add(self._status_bar, 0, flag=wx.BOTTOM|wx.EXPAND)
