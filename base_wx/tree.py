@@ -441,8 +441,63 @@ class TreeView(UIViewObject, wx.TreeCtrl):
                              border=5, widget_name='interval', initial=str(40)) 
         #
     
+        ##
+        ctn_receiver_1x = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 1 X', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_1x, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='x_rec1') 
+        #    
+        ctn_receiver_1y = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 1 Y', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_1y, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='y_rec1') 
+        #     
+        ##
+        ctn_receiver_2x = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 2 X', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_2x, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='x_rec2') 
+        #    
+        ctn_receiver_2y = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 2 Y', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_2y, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='y_rec2') 
+        #         
+
+        ##
+        ctn_receiver_3x = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 3 X', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_3x, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='x_rec3') 
+        #    
+        ctn_receiver_3y = dlg.view.AddCreateContainer('StaticBox', 
+                                        label='Receiver 3 Y', 
+                                        orient=wx.VERTICAL, 
+                                        proportion=0, 
+                                        flag=wx.EXPAND|wx.TOP, border=5)
+        dlg.view.AddTextCtrl(ctn_receiver_3y, proportion=0, flag=wx.EXPAND|wx.TOP, 
+                             border=5, widget_name='y_rec3') 
+        #     
+
     
-        dlg.view.SetSize((300, 400))
+    
+    
+        dlg.view.SetSize((300, 600))
         result = dlg.view.ShowModal()
         #
         try:
@@ -456,8 +511,10 @@ class TreeView(UIViewObject, wx.TreeCtrl):
                 
                 
                 mwc = wx.GetApp().get_main_window_controller()
-                cc = UIM.create('simulationplot_controller', mwc.uid)        
                 
+                
+                #sim_plotter = UIM.create('simulationplot_controller', mwc.uid)        
+                sim_plotter = UIM.create('testeplot_controller', mwc.uid)   
         
                 
         
@@ -470,9 +527,10 @@ class TreeView(UIViewObject, wx.TreeCtrl):
                 print("\n\n")
                 
                 
-                img_base = cc._main_panel.append_artist("AxesImage", 
+                img_base = sim_plotter._main_panel.append_artist("AxesImage", 
                                                       cmap="binary",
                                                       extent=extent)
+                
                 img_base.set_data(model.data)
                 img_base.set_alpha(0.9)
                 #self.img_base = main_ax.imshow(vec)
@@ -480,12 +538,18 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         
         
         
-                sga = SGAnimation(simulation.uid, cc.uid, 
+                sga = SGAnimation(simulation.uid, sim_plotter.uid, 
                                   vmin=float(results.get("vmin")),
-                                  vmax=float(results.get("vmax")) 
-                                  )
+                                  vmax=float(results.get("vmax")),
+                                  x_rec1=int(results.get("x_rec1")), y_rec1=int(results.get("y_rec1")),
+                                  x_rec2=int(results.get("x_rec2")), y_rec2=int(results.get("y_rec2")),
+                                  x_rec3=int(results.get("x_rec3")), y_rec3=int(results.get("y_rec3"))
+                )
                 
-                fig = cc._main_panel.plot_axes.get_figure()
+                fig = sim_plotter._main_panel.plot_axes.get_figure()
+                
+                #sec_axes = sim_plotter._main_panel.get_secondary_axes()
+                
                 
                 animation = FuncAnimation(fig, sga, frames=simulation.nt, 
                                           init_func=sga.init_func, 
@@ -495,7 +559,14 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         
         
         
-                cpc = UIM.list('canvas_plotter_controller', cc.uid)[0]
+                #cpc = UIM.list('canvas_plotter_controller', sim_plotter.uid)[0]
+                
+                try:
+                    cpc = UIM.list('canvas_plotter_controller', sim_plotter.uid)[0]
+                except:
+                    cpc = UIM.list('canvas_plotter_controller_jun21', sim_plotter.uid)[0]
+                
+                
                 #cpc.figure_titletext = model.name 
                 
                 xlim = (0, simulation.nx)

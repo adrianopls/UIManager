@@ -54,6 +54,9 @@ from .cross_plotter import CrossPlotController, CrossPlot
 from .plotter_model import ModelPlotController, ModelPlot
 from .plotter_wavelet import WaveletPlotController, WaveletPlot
 from .plotter_simulation import SimulationPlotController, SimulationPlot
+#
+from .plotter_teste import TestePlotController, TestePlot
+#
 #from . import interface
 #
 #from . import ImportSelector
@@ -92,4 +95,7 @@ from .canvas_plotter import CanvasPlotterController, CanvasPlotter
 from .canvas_track import TrackCanvasController, TrackCanvas   
 from .track_label import TrackLabelController, TrackLabel
 
-
+#### Modo teste
+from .canvas_base_jun21 import CanvasBaseControllerJun21, CanvasBaseViewJun21                                         
+from .canvas_plotter_jun21 import CanvasPlotterControllerJun21, CanvasPlotterJun21   
+#### MOdo teste - fim

@@ -4,14 +4,14 @@ from collections import OrderedDict
 
 #from app.app_utils import DropTarget
 from . import UIManager
-from . import CanvasBaseController
-from . import CanvasBaseView
+from . import CanvasBaseControllerJun21
+from . import CanvasBaseViewJun21
 
 
 
 
-class CanvasPlotterController(CanvasBaseController):
-    tid = 'canvas_plotter_controller'
+class CanvasPlotterControllerJun21(CanvasBaseControllerJun21):
+    tid = 'canvas_plotter_controller_jun21'
     
     def __init__(self, **state):
         super().__init__(**state)
@@ -714,8 +714,8 @@ class CanvasPlotterController(CanvasBaseController):
 ######    
 
         
-class CanvasPlotter(CanvasBaseView):  
-    tid = 'canvas_plotter'
+class CanvasPlotterJun21(CanvasBaseViewJun21):  
+    tid = 'canvas_plotter_jun21'
 
     def __init__(self, controller_uid):
         logging.debug('CanvasPlotter.__init__')
