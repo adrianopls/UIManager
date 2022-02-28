@@ -51,6 +51,7 @@ from .workpage import WorkPageController, WorkPage
 #from .frame_nav import NavigatorController, Navigator
 from .cross_plotter import CrossPlotController, CrossPlot
 #
+from .plotter_image import ImagePlotController, ImagePlot
 from .plotter_model import ModelPlotController, ModelPlot
 from .plotter_wavelet import WaveletPlotController, WaveletPlot
 from .plotter_simulation import SimulationPlotController, SimulationPlot
@@ -90,6 +91,7 @@ from .coding_console import ConsoleController, Console
 #from .well_plot_prop_editor import LPEObjectsPanelController, \
 #                                                 LPEObjectsPanel
 #
+
 from .canvas_base import CanvasBaseController, CanvasBaseView                                         
 from .canvas_plotter import CanvasPlotterController, CanvasPlotter                
 from .canvas_track import TrackCanvasController, TrackCanvas   
