@@ -276,7 +276,8 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         
         UIM = UIManager()      
         mwc = wx.GetApp().get_main_window_controller()
-        cc = UIM.create('imageplot_controller', mwc.uid)        
+
+        imageplot_controller = UIM.create('imageplot_controller', mwc.uid)
         
         #xlim_max, ylim_max = model.data.shape
         # (left, right, bottom, top)
@@ -290,40 +291,44 @@ class TreeView(UIViewObject, wx.TreeCtrl):
             
         
         
-        mpl_figure_canvas = cc._main_panel
+        mpl_figure_canvas = imageplot_controller._main_panel
+
         mpl_figure = mpl_figure_canvas.figure
         mpl_axes = mpl_figure_canvas.plot_axes
+        mpl_cbar_axes = mpl_figure_canvas.colorbar_axes
         
-        
-        mpl_axes_image = mpl_figure_canvas.append_artist("AxesImage", 
-                                              cmap="binary_r",
-                                              extent=extent)
+        mpl_axes_image = mpl_figure_canvas.append_artist("AxesImage", cmap="binary_r", extent=extent)
         mpl_axes_image.set_data(img.data)
         vmin = 0
         vmax = 255
         mpl_axes_image.set_clim(vmin, vmax)
-    
-        cpc = UIM.list('canvas_plotter_controller', cc.uid)[0]
-        cpc.figure_titletext = img.name 
+
+
+        canvas_plotter_controller = UIM.list('canvas_plotter_controller', imageplot_controller.uid)[0]
+        canvas_plotter_controller.figure_titletext = img.name
         
-        
-        
+
         
         xlim = (0, img.width)
-        cpc.xlim = xlim
-        cpc.set_plot_lim("x", xlim)
+        canvas_plotter_controller.xlim = xlim
+        canvas_plotter_controller.set_plot_lim("x", xlim)
         ylim = (img.height, 0)
-        cpc.ylim = ylim
-        cpc.set_plot_lim("y", ylim)
+        canvas_plotter_controller.ylim = ylim
+        canvas_plotter_controller.set_plot_lim("y", ylim)
         
         
-        mpl_figure.colorbar(mpl_axes_image, ax=mpl_axes) #cmap="binary_r"
-        
-        
-        
+        cbar = mpl_figure.colorbar(mpl_axes_image, cax=mpl_cbar_axes) #cmap="binary_r"
+
+        cbar.set_ticks([vmin, vmax])
+        cbar.set_label("8-bit pixel value", labelpad=1)#, rotation=270)
+
+        mpl_figure_canvas.draw()
+#
         #print(img.width, img.height)
 
         #image.set_label('crossplot_controller')            
+
+
 
 
 

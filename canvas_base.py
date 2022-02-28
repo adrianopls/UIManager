@@ -42,13 +42,15 @@ CANVAS_SCALES = ["linear", "log", "symlog", "logit"]
     window probably implements a wxSizer to control the displayed
     control size - but we give a hint as to our preferred minimum
     size.
-    """
 
+"""
 
 
 """
-O CanvasBaseController eh a classe de base para todos objeto de Plotagem!!!
+O CanvasBaseController eh a classe de base para todos objetos de Plotagem!!!
 """
+
+
 class CanvasBaseController(UIControllerObject):
     tid = None
 
@@ -57,10 +59,18 @@ class CanvasBaseController(UIControllerObject):
         # Top level properties    
         'rect': {
                 #'default_value': (0.05, 0.05, 0.9, 0.9),
-                'default_value': (0.1, 0.1, 0.8, 0.8), 
-                #'default_value': (0.0, 0.0, 1.0, 1.0), 
+                #'default_value': (0.1, 0.1, 0.8, 0.8),
+                'default_value': (0.15, 0.15, 0.7, 0.7),
+                #'default_value': (0.0, 0.0, 1.0, 1.0),
                 'type': (tuple, float, 4)  
         },
+
+        'colorbar': {
+            'default_value': False,  # True,
+            'type': bool
+        },
+
+
         'xscale': {
                 'default_value': 'linear', #["linear", "log", "symlog", "logit"]
                 'type': str
@@ -1038,7 +1048,18 @@ class CanvasBaseView(UIViewObject, FigureCanvas):
                                   ylim=controller.ylim
         )
         self.figure.add_axes(self.base_axes)
-        self.base_axes.set_zorder(0)        
+        self.base_axes.set_zorder(0)
+        #
+        """
+        Inserting Colorbar - 28/02/2022
+        """
+        if controller.colorbar:
+            cbar_rect = (0.88, 0.15, 0.04, 0.7)
+            self.colorbar_axes = Axes(self.figure, cbar_rect, facecolor=None)
+            self.figure.add_axes(self.colorbar_axes)
+
+
+
         #
         if self.share_x:
             self.plot_axes = Axes(self.figure, 
