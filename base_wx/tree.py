@@ -19,6 +19,7 @@ ID_TYPE_TID = 1
 ID_TYPE_ATTRIBUTE = 2
 
 
+
 class TreeController(UIControllerObject):
     tid = 'tree_controller'
     _DEFAULT_ROOT_NAME = "SonicSim Project"
@@ -90,6 +91,8 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         
         if node_main_info[0] == "acoustic_2d_model":
             self._open_model(node_main_info)
+        elif node_main_info[0] == "image":    
+            self._open_image(node_main_info)
         elif node_main_info[0] == "wavelet":
             self._open_wavelet(node_main_info)        
         elif node_main_info[0] == "simulation":
@@ -266,6 +269,64 @@ class TreeView(UIViewObject, wx.TreeCtrl):
 
 
 
+
+    def _open_image(self, image_uid):
+        OM = ObjectManager()
+        img = OM.get(image_uid)    
+        
+        UIM = UIManager()      
+        mwc = wx.GetApp().get_main_window_controller()
+        cc = UIM.create('imageplot_controller', mwc.uid)        
+        
+        #xlim_max, ylim_max = model.data.shape
+        # (left, right, bottom, top)
+        extent = (0, img.width, img.height, 0)
+        
+        print("\n\n")
+        print(extent)
+        print(img.data.min())
+        print(img.data.max())
+        print("\n\n")
+            
+        
+        
+        mpl_figure_canvas = cc._main_panel
+        mpl_figure = mpl_figure_canvas.figure
+        mpl_axes = mpl_figure_canvas.plot_axes
+        
+        
+        mpl_axes_image = mpl_figure_canvas.append_artist("AxesImage", 
+                                              cmap="binary_r",
+                                              extent=extent)
+        mpl_axes_image.set_data(img.data)
+        vmin = 0
+        vmax = 255
+        mpl_axes_image.set_clim(vmin, vmax)
+    
+        cpc = UIM.list('canvas_plotter_controller', cc.uid)[0]
+        cpc.figure_titletext = img.name 
+        
+        
+        
+        
+        xlim = (0, img.width)
+        cpc.xlim = xlim
+        cpc.set_plot_lim("x", xlim)
+        ylim = (img.height, 0)
+        cpc.ylim = ylim
+        cpc.set_plot_lim("y", ylim)
+        
+        
+        mpl_figure.colorbar(mpl_axes_image, ax=mpl_axes) #cmap="binary_r"
+        
+        
+        
+        #print(img.width, img.height)
+
+        #image.set_label('crossplot_controller')            
+
+
+
     def _open_model(self, model_uid):
         OM = ObjectManager()
         model = OM.get(model_uid)    
@@ -274,8 +335,6 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         mwc = wx.GetApp().get_main_window_controller()
         cc = UIM.create('modelplot_controller', mwc.uid)        
         
-        
-        
         #xlim_max, ylim_max = model.data.shape
         # (left, right, bottom, top)
         extent = (0, model.nx, model.ny, 0)
@@ -283,15 +342,19 @@ class TreeView(UIViewObject, wx.TreeCtrl):
         print("\n\n")
         print(extent)
         print("\n\n")
-        
-        
-        image = cc._main_panel.append_artist("AxesImage", 
-                                              cmap="binary",
+            
+        axes_image = cc._main_panel.append_artist("AxesImage", 
+                                              cmap="binary_r",
                                               extent=extent)
 
-        image.set_data(model.data)
-      
+        image = model._get_image()
         
+
+        axes_image.set_data(image.data)
+        vmin = 0
+        vmax = 255
+        axes_image.set_clim(vmin, vmax)
+   
         cpc = UIM.list('canvas_plotter_controller', cc.uid)[0]
         cpc.figure_titletext = model.name 
         
@@ -531,7 +594,10 @@ class TreeView(UIViewObject, wx.TreeCtrl):
                                                       cmap="binary",
                                                       extent=extent)
                 
-                img_base.set_data(model.data)
+                
+                image = model._get_image()
+                
+                img_base.set_data(image.data)
                 img_base.set_alpha(0.9)
                 #self.img_base = main_ax.imshow(vec)
                 img_base.set_cmap("Greys")
